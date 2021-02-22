@@ -1,0 +1,137 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/leaflet.css" />
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+<div class="bg">
+<div class="jumbotron-fluid" style='height: 12em'>
+  <h4 class="display-3" style="font-family:'Ibarra Real Nova" id="top-title">What Was Left:</h4>
+    <h6 class="display-4" style="font-family:'Ibarra Real Nova"id="top-sub-title">Archaeology and the Radiocarbon Record of the UK</h6></div>
+
+  <!-- top-level container -->
+  <div class="container-fluid align-content-center">
+
+    <!-- main content row -->
+    <div class="row container-fluid">
+
+      <!-- left sidebar panel column -->
+
+      <div class="col-2 panel-body align-items-center">
+
+        <!-- top left card content -->
+        <div class="card align-items-center">
+          <div class="card-header mx-1 text-center" style="padding: .5em">
+            <h5>A Story in Bone</h5>
+          </div>
+          <div class="container-fluid">
+            <img src="img/main-card.jpg" class="card-img-top card-pic" style="padding-top:.5em"></div>
+          <div class="card-footer" style="font-size: x-small">
+              Photo Credit: Alan Hawkes, <i>The Sandman</i>
+            </div>
+            <div class="card-text mx-auto" style="padding: .5em">
+              <h6 class="lead" style="font-size: large; padding: .5em">In this map, you're invited to explore the radiocarbon history of the UK.</h6>
+              <p>Each dot represents a unique artifact which has been radiocarbon dated.  Most sites contain several artifacts, often from different eras and cultures.</p>
+            </div>
+        </div> <!-- end top left card text -->
+
+        <div class="spacer" style="margin: .5em"></div>
+
+        <!-- lower left card content -->
+        <div class="card align-items-center">
+          <div class="card-header mx-1 text-center" style="padding: .5em">
+            <h5>Time Slider and Symbols</h5>
+          </div>
+          <div class="'card-header mx-1 text-center" style="padding: .5em">
+            <h6 class="lead">The map covers a time sequence from 10,000 BCE to 1820 CE.</h6>
+          </div>
+          <div class="card-text mx-auto" style="padding: .5em">
+            <p>As you move the time slider, <b>Symbols</b> will change size according to a <i>probability density function</i>: the larger
+              the <S></S>ymbol, the more likely it originated in that year.</p>
+            <!-- <p>In a very broad sense, this tool can be used to explore spatial patterns of human social development in prehistory...</p>
+            <p>Or, it just tells you where we've found some old things.</p> -->
+          </div>
+
+      </div> <!-- end lower left card content -->
+
+      </div> <!-- end of left sidebar column -->
+
+
+      <!-- MAP GOES HERE -->
+      <div class='leaflet-container col-8 mx-auto align-top' id="mapid"></div>
+
+      <!-- right sidebar column -->
+      <div class="col-2 panel-body align-items-center">
+        <!-- top right card -->
+         <div class="card align-items-center">
+           <div class="card-header mx-2 text-center" style="padding: .5em">
+             <h5>Archaeological Culture</h5>
+           </div>
+           <div class='card-text mx-auto text-center' style="padding: .5em; margin-bottom: 0em;">
+             <b>Buttons</b> change symbol color according to the sample's associated culture.<br>
+             <b>Symbols</b> are <i>semi-transparent</i>.  Brighter colors suggest that several artifacts may overlap in time at that site.<br>
+             <b>Symbols</b> are <i>encircled by white rings</i>.  More rings at one site suggest several artifacts which don't overlap in time.
+           </div>
+         </div> <!-- close top right card -->
+
+        <div class="spacer" style='margin: .5em'></div>
+
+        <!-- bottom right card (button panel) -->
+        <div class="card align-items-center">
+           <div class="container" style="padding-bottom: .5em; padding-top: .5em;">
+             <div class="btn-group-vertical btn-group" id="culture-buttons">
+               <button type="button" class="btn btn-light" id="mono" style="background-color: white;">No Selection (monochrome)</button>
+               <button type="button" class="btn btn-light" id="poly">Select All</button>
+               <button type="button" class="btn btn-light" id="British EN">British Early Neolithic</button>
+               <button type="button" class="btn btn-light" id="Grooved Ware">Grooved Ware</button>
+               <button type="button" class="btn btn-light" id="EBA">Early Bronze Age</button>
+               <button type="button" class="btn btn-light" id="British MN">British Mid-Neolithic</button>
+               <button type="button" class="btn btn-light" id="British LN">British Late Neolithic</button>
+               <button type="button" class="btn btn-light" id="Late Meso">Late Mesolithic</button>
+               <button type="button" class="btn btn-light" id="Obanian">Obanian</button>
+               <button type="button" class="btn btn-light" id="Pitted Ware">Pitted Ware</button>
+               <button type="button" class="btn btn-light" id="Bell Beaker">Bell Beaker</button>
+               <button type="button" class="btn btn-light" id="Orkney">Orkney</button>
+            </div>
+          </div> <!-- close button group container -->
+         </div> <!-- close bottom right card -->
+      </div> <!-- close right column -->
+    </div> <!-- close row -->
+ </div> <!-- close background div -->
+
+
+    </div> <!-- end right column -->
+  </div> <!-- end main content row -->
+
+  <!-- Add your site or application content here -->
+  <script src="js/jquery-3.5.1.js"></script>
+  <script src="js/leaflet.js"></script>
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/geojson.js"></script>
+
+</body>
+
+</html>
