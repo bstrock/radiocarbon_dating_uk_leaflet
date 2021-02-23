@@ -107,28 +107,38 @@ function processData(data) {
   // let's get properties
   let properties = data.features[0].properties;
 
-  let tenKYA = properties['-10000'];
-
   // properties are k-v pairs, we want the keys
   let attArray = $.map(properties, function(v, i){
     return i;
   });
 
+  // so.
+  // JavaScript does some apparently silly things.  Buckle up for this.
+  let tenKYA = properties['-10000']; // For some reason, the value "-10000" disappears from the simple key call above.
+  attArray.unshift(tenKYA);  // we have to add its value back in.
 
-  attArray.unshift(tenKYA);
+  // You'd think a simple sort function can sort things.
+  // In JS, this true only in a very disconnected sense.
+  // Sorting our list of numbers, from -10000 to 1820, is not so straightforward.
+  attArray.sort(function(a, b){
+    return b - a ? -1 : 1;
+  });
+  // Now we have these values:  [-5, ... -9900, 1820, ... 0, <string column headers>, -9905, ... -10000]
+  // What on Earth is to be done?
+  // Enter the Frankenstein machine.
 
+  let negVals = attArray.slice(0, 1980);
+  negVals.reverse();
+  let posVals = attArray.slice(1980, 2345);
+  posVals.reverse();
+  let strayNegVals = attArray.slice(2364);
+  strayNegVals.reverse();
 
-  // sort the array, function returns lower value
-  attArray.sort(function(a, b){return a - b});
-  console.log(attArray);
+  let firstStep = strayNegVals.concat(negVals);
+  return firstStep.concat(posVals);
 
-
-  // array is sorted low to high- let's keep everything but the strings at the end
-  let keepValues = attArray.slice(0, 2366);
-  console.log(keepValues.length);
-
-    return keepValues;
-
+  // Whew.
+  // I will close by noting that Safari handled it all just fine on the first go.  Thanks, Chrome.
 }
 
 function createPropSymbols(data, map) {
@@ -210,7 +220,7 @@ function createSequenceControls(map, attributes) {
   // why is it broken in chrome?
   $('.range-slider').attr({
     min: 0,
-    max: 2365,
+    max: 2364,
     value: 0,
     step: 1
   });
