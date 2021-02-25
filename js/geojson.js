@@ -117,28 +117,51 @@ function processData(data) {
   let tenKYA = properties['-10000']; // For some reason, the value "-10000" disappears from the simple key call above.
   attArray.unshift(tenKYA);  // we have to add its value back in.
 
-  // You'd think a simple sort function can sort things.
-  // In JS, this true only in a very disconnected sense.
-  // Sorting our list of numbers, from -10000 to 1820, is not so straightforward.
-  attArray.sort(function(a, b){
-    return b - a ? -1 : 1;
-  });
-  // Now we have these values:  [-5, ... -9900, 1820, ... 0, <string column headers>, -9905, ... -10000]
-  // What on Earth is to be done?
-  // Enter the Frankenstein machine.
+  // user agent detection necessary because chrome and safari don't agree on how to sort numbers...
+  let agent = navigator.userAgent;
+  let chromeAgent = agent.indexOf("Chrome") > -1;
+  let safariAgent = agent.indexOf("Safari") > -1;
+  if ((chromeAgent) && (safariAgent)) safariAgent = false;
 
-  let negVals = attArray.slice(0, 1980);
-  negVals.reverse();
-  let posVals = attArray.slice(1980, 2345);
-  posVals.reverse();
-  let strayNegVals = attArray.slice(2364);
-  strayNegVals.reverse();
+  switch(safariAgent){
+    case true:
+      // sort the array, function returns lower value
+      attArray.sort(function(a, b){return a - b});
+      console.log('I am in Safari');
+      console.log(attArray);
+    // array is sorted low to high- let's keep everything but the strings at the end
+      let keepValues = attArray.slice(0, 2366);
+    return keepValues.filter((value)=>value!==0);  // yes, this does in fact hurt.
 
-  let firstStep = strayNegVals.concat(negVals);
-  return firstStep.concat(posVals);
+    case false:
+      // You'd think a simple sort function can sort things.
+      // In chrome, this true only in a very disconnected sense.
+      // Sorting our list of numbers, from -10000 to 1820, is not so straightforward.
+      attArray.sort(function(a, b){
+        return b - a ? -1 : 1;
+        });
 
+      console.log('I am in Chrome');
+      console.log(attArray);
+      // Now we have these values:  [-5, ... -9900, 1820, ... 0, <string column headers>, -9905, ... -10000]
+      // What on Earth is to be done?
+      // Enter the Frankenstein machine.
+
+      let negVals = attArray.slice(0, 1980);
+      negVals.reverse();
+      console.log('negvals' + negVals);
+      let posVals = attArray.slice(1980, 2345);
+      posVals.reverse();
+      console.log('posvals' + posVals);
+      let strayNegVals = attArray.slice(2364);
+      strayNegVals.reverse();
+      console.log('stray' + strayNegVals);
+      let firstStep = strayNegVals.concat(negVals);
+      let lastStep = firstStep.concat(posVals);
+      console.log(lastStep);
+      return lastStep;
+  }
   // Whew.
-  // I will close by noting that Safari handled it all just fine on the first go.  Thanks, Chrome.
 }
 
 function createPropSymbols(data, map) {
