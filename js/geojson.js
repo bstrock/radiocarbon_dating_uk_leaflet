@@ -34,7 +34,7 @@ function mapFactory() {
   L.control.legend = (opts) => {return new L.Control.Legend(opts)};
 
   //attach time legend to map
-  L.control.legend({position: 'bottomright'}).addTo(map);
+  L.control.legend({position: 'bottomleft'}).addTo(map);
 
   // extend control to make slider
   makeSliderControl(map);
@@ -58,7 +58,7 @@ function makeLegend(map) {
       div.innerHTML = '<h2 style="font-family:\'Ibarra Real Nova">Year: 10000 BCE</h2>';
       div.style.backgroundColor = 'lightgrey';
       div.style.textAlign = 'left';
-      div.style.width = '275px';
+      div.style.width = '300px';
       div.style.padding = '.5em';
       div.style.borderStyle = 'solid';
       div.style.borderWidth = '2px';
@@ -85,7 +85,7 @@ function makeSliderControl(map) {
       div.style.borderStyle = 'solid';
       div.style.borderWidth = '2px';
       div.style.borderRadius = '5px';
-      div.style.width = '600px';
+      div.style.width = '300px';
 
       // stops map from moving when slider is clicked
       L.DomEvent.disableClickPropagation(div);
