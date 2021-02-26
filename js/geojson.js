@@ -1,3 +1,4 @@
+// creates map from leaflet interactions, adds controls, summons tiles, etc.
 function mapFactory() {
   //create the map
   let map = L.map('mapid', {
@@ -26,8 +27,28 @@ function mapFactory() {
   //attaches listeners to buttons for "culture" field
   buttonFactory(map);
 
-  //perhaps make this a function?
-  //anyway, it's a legend.
+  // magic leaflet control stuff happens in this function
+  makeLegend(map);
+
+  //constructor function above is instantiated here
+  L.control.legend = (opts) => {return new L.Control.Legend(opts)};
+
+  //attach time legend to map
+  L.control.legend({position: 'bottomright'}).addTo(map);
+
+  // extend control to make slider
+  makeSliderControl(map);
+
+  // slider control constructor function
+  L.control.sliderControl = (opts) => {return new L.Control.SliderControl(opts)};
+
+  // instantiate slider and add to map
+  L.control.sliderControl({position: 'bottomleft'}).addTo(map); // adds slider to map
+}
+
+// extends control class to enable time legend
+function makeLegend(map) {
+
   L.Control.Legend = L.Control.extend({
     position: 'bottomright',
     onAdd: function (map) {
@@ -48,14 +69,11 @@ function mapFactory() {
     onRemove: function (map) {  // this is really important for some reason??
     }
   });
+}
 
-  //constructor function above is instantiated here
-  L.control.legend = function (opts) {
-    return new L.Control.Legend(opts);
-  }
-  L.control.legend({position: 'bottomright'}).addTo(map);  //attach time legend to map
+// extends control class to enable slider control
+function makeSliderControl(map) {
 
-  // constructor for slider control
   L.Control.SliderControl = L.Control.extend({
     position: 'bottomleft',
     onAdd: function (map) {
@@ -78,15 +96,10 @@ function mapFactory() {
     }
 
   });
-
-  // instantiates slider control
-  L.control.sliderControl = function (opts) {
-    return new L.Control.SliderControl(opts);
-  };
-
-  L.control.sliderControl({position: 'bottomleft'}).addTo(map); // adds slider to map
 }
 
+// ajax call to get the geojson data
+// callback functions: process data, create symbols, create sequence controls
 function getData(map) {
   /* AJAX call happens here
   waits until data is loaded
@@ -94,14 +107,16 @@ function getData(map) {
 
   let data = $.getJSON('data/gbc14-10k.geojson', function() {
     $.when(data).done(function(){
-      console.log(data.responseJSON);
-      let attributes = processData(data.responseJSON);  //gets ordered array of years
-      createPropSymbols(data.responseJSON, map, attributes);  // instantiates symbols
+      let geoJSON = data.responseJSON;
+      console.log(geoJSON);
+      let attributes = processData(geoJSON);  //gets ordered array of years
+      createPropSymbols(geoJSON, map, attributes);  // instantiates symbols
       createSequenceControls(map, attributes);  // instantiates range slider & listener
     });
   });
 }
 
+// does the messy work of getting attributes for the slider from the json data
 function processData(data) {
 
   // let's get properties
@@ -118,122 +133,74 @@ function processData(data) {
   attArray.unshift(tenKYA);  // we have to add its value back in.
 
   // user agent detection necessary because chrome and safari don't agree on how to sort numbers...
+  switch(sniffSniff()){
+    // safari = true, chrome = false
+    case true:
+     return safariSort(attArray);
+
+    case false:
+      return chromeSort(attArray);
+
+  }
+}
+
+// checks if user is in safari or chrome to decide how numbers should be sorted
+function sniffSniff(){
   let agent = navigator.userAgent;
   let chromeAgent = agent.indexOf("Chrome") > -1;
   let safariAgent = agent.indexOf("Safari") > -1;
   if ((chromeAgent) && (safariAgent)) safariAgent = false;
+  return safariAgent;
+}
 
-  switch(safariAgent){
-    case true:
-      // sort the array, function returns lower value
-      attArray.sort(function(a, b){return a - b});
-      console.log('I am in Safari');
-      console.log(attArray);
+// the sorting that happens for safari
+function safariSort(attArray){
+   attArray.sort(function(a, b){
+        return a - b
+      });
+
     // array is sorted low to high- let's keep everything but the strings at the end
       let keepValues = attArray.slice(0, 2366);
-    return keepValues.filter((value)=>value!==0);  // yes, this does in fact hurt.
+    return keepValues.filter( (value) => value !== 0);  // yes, this does in fact hurt.
+}
 
-    case false:
-      // You'd think a simple sort function can sort things.
-      // In chrome, this true only in a very disconnected sense.
-      // Sorting our list of numbers, from -10000 to 1820, is not so straightforward.
-      attArray.sort(function(a, b){
-        return b - a ? -1 : 1;
-        });
+// the much more involved sorting that has to happen for chrome
+function chromeSort(attArray){
+  // You'd think a simple sort function can sort things.
+  // In chrome, this true only in a very disconnected sense.
+  // Sorting our list of numbers, from -10000 to 1820, is not so straightforward.
+  attArray.sort(function(a, b){
+    return b - a ? -1 : 1;
+  });
 
-      console.log('I am in Chrome');
-      console.log(attArray);
       // Now we have these values:  [-5, ... -9900, 1820, ... 0, <string column headers>, -9905, ... -10000]
       // What on Earth is to be done?
       // Enter the Frankenstein machine.
 
-      let negVals = attArray.slice(0, 1980);
-      negVals.reverse();
-      console.log('negvals' + negVals);
-      let posVals = attArray.slice(1980, 2345);
-      posVals.reverse();
-      console.log('posvals' + posVals);
-      let strayNegVals = attArray.slice(2364);
-      strayNegVals.reverse();
-      console.log('stray' + strayNegVals);
-      let firstStep = strayNegVals.concat(negVals);
-      let lastStep = firstStep.concat(posVals);
-      console.log(lastStep);
-      return lastStep;
+  let negVals = attArray.slice(0, 1980);
+  negVals.reverse();
+  let posVals = attArray.slice(1980, 2345);
+  posVals.reverse();
+  let strayNegVals = attArray.slice(2364);
+  strayNegVals.reverse();
+  let firstStep = strayNegVals.concat(negVals);
+  return firstStep.concat(posVals);
+      // Whew.
+}
+
+// attaches event listeners to the culture buttons in the sidebar, so that symbols change color when you click them
+function buttonFactory(map) {
+  let buttons = $(":button");
+  for (let i = 0; i < buttons.length; i++) {
+    let buttonID = buttons[i].id; // get button id
+    buttons[i].state = 'off'; // give it an off state to toggle
+    buttons[i].addEventListener('click', function(){
+      updateMarkerColor(buttonID, map); // callback function can be changed to repurpose this code
+    })
   }
-  // Whew.
 }
 
-function createPropSymbols(data, map) {
-  // uses geoJson function to instantiate circlemarkers from geojson data
-  // IE it turns data into markers at the start of the map
-
-  L.geoJson(data, {
-    pointToLayer: function(feature, latlng){
-      return symbolSizer(feature, latlng, 0)
-    }
-    }).addTo(map);
-}
-
-function symbolSizer(feature, latlng, attribute) {
-
-  /* informs look and interaction for symbol objects
-  inputs: GSON feature, latlng coordinate pair
-  outputs: leaflet circlemarker object with style and interaction properties set*/
-
-  //define style
-  let geoMarkerOptions = {
-    fillColor: 'white',
-    color: '#FFF',
-    weight: .5,
-    opacity: 1,
-    fillOpacity: .5,
-  };
-
-  // get value of attributes
-  let attValue = Number(feature.properties[attribute]);
-
-  // calculate radius
-  geoMarkerOptions.radius = calcPropRadius(attValue);
-
-  // create marker
-  let layer = L.circleMarker(latlng, geoMarkerOptions);
-
-  createPopup(feature.properties, layer);
-
-  layer.culture = feature.properties.Culture || {}; // we all need a little culture
-  return layer;
-}
-
-function calcPropRadius(attValue) {
-
-  /* calculates radius of circle to inform prop symbols
-  inputs:  attributes value to calculate
-  returns:  radius (numeric value) */
-
-  let radius = 40 * Math.pow(attValue, .2)
-
-  return radius;
-}
-
-function createPopup(properties, layer){
-    // generate popup content
-  let popUpContent = "<p><b>Site Name: </b>" + properties['SiteName'] + "<br>" +
-                      "<b>Material: </b>" + properties['Material'] +  "<br>";
-
-    if (properties['MaterialSpecies']){
-      popUpContent += "<b>Material Species: </b>" + properties['MaterialSpecies'] +  "<br>";
-    }
-
-  if (properties['Culture'].length > 0) {
-    popUpContent += "<b>Culture: </b>" + properties['Culture'] + "</p>";
-  }
-
-  // bind popup to marker
-  layer.bindPopup(popUpContent);
-
-}
-
+// creates the slider input element, initializes its range values, and adds event listener
 function createSequenceControls(map, attributes) {
   //create range input element (slider)
   $('.slider-control').append('<input class="range-slider" type="range">');
@@ -255,17 +222,91 @@ function createSequenceControls(map, attributes) {
   });
 }
 
+// when we need point symbols from geojson data, we turn to this symbol, which calls the pointToLayer
+function createPropSymbols(data, map) {
+  // uses geoJson function to instantiate circlemarkers from geojson data
+  // IE it turns data into markers at the start of the map
+
+  L.geoJson(data, {
+    pointToLayer: function(feature, latlng){
+      return symbolFactory(feature, latlng, 0)
+    }
+    }).addTo(map);
+}
+
+// instantiates markers, initializes marker style attributes, attaches popups
+function symbolFactory(feature, latlng, attribute) {
+
+  //inputs: GSON feature, latlng coordinate pair
+  //outputs: leaflet circlemarker object with style and interaction properties set
+
+  //define style
+  let geoMarkerOptions = {
+    fillColor: 'white',
+    color: '#FFF',
+    weight: .5,
+    opacity: 1,
+    fillOpacity: .5,
+  };
+
+  // get value of attributes
+  let attValue = Number(feature.properties[attribute]);
+
+  // calculate radius
+  geoMarkerOptions.radius = calcPropRadius(attValue);
+
+  // create marker
+  let layer = L.circleMarker(latlng, geoMarkerOptions);
+
+  // make me a popup
+  createPopup(feature.properties, layer);
+
+  // we all need a little culture
+  layer.culture = feature.properties.Culture || {};
+  return layer;
+}
+
+// scaling function for symbols based on attribute value selected by slider control
+function calcPropRadius(attValue) {
+
+  /* calculates radius of circle to inform prop symbols
+  inputs:  attributes value to calculate
+  returns:  radius (numeric value) */
+
+  let radius = 40 * Math.pow(attValue, .2)
+
+  return radius;
+}
+
+// gets attribute data and populates popups
+function createPopup(properties, layer){
+    // generate popup content
+  let popUpContent = "<p><b>Site Name: </b>" + properties['SiteName'] + "<br>" +
+                      "<b>Material: </b>" + properties['Material'] +  "<br>";
+
+    if (properties['MaterialSpecies']){
+      popUpContent += "<b>Material Species: </b>" + properties['MaterialSpecies'] +  "<br>";
+    }
+
+  if (properties['Culture'].length > 0) {
+    popUpContent += "<b>Culture: </b>" + properties['Culture'] + "</p>";
+  }
+
+  // bind popup to marker
+  layer.bindPopup(popUpContent);
+
+}
+
+// when you move the slider, this pops off and makes the symbols different sizes as the year changes
+// also changes the corresponding year in the time legend
 function updatePropSymbols(map, attribute){
-  /* this function is triggered when slider input is detected
-  inputs: leaflet map object, attribute array
-  returns: none (NOTE- updates properties of existing objects!)
-   */
+  //inputs: leaflet map object, attribute array
+  //returns: none (NOTE- updates properties of existing objects!)
   map.closePopup();  // the slider is moving, close the popups
 
   updateTimeLegend(attribute); // gives the time legend the correct year to show
-  console.log('after' + $('.time-legend').html());
-  // each marker is a layer- this method iterates through them
 
+  // each marker is a layer- this method iterates through them
   map.eachLayer(function(layer){
     // check for existence of a feature
     if (layer.feature){
@@ -279,37 +320,20 @@ function updatePropSymbols(map, attribute){
   })
 }
 
+// business function that formats and displays values for year in the time legend
 function updateTimeLegend(attribute){
-  console.log(attribute);
-  console.log($('.time-legend').html());
   // updates the time legend with the correct value
   // displays in multiples of ten (decades)
 
-  //if (attribute % 10 == 0) {  // decade filter
-
-    // this ensures correct formatting for years depending on negative or positive value
-    if (attribute < 0){
-      $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute.slice(1) + ' BCE</h2>')
-    } else {
-      $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute + ' CE</h2>');
-   //}
-      console.log($('.time-legend').html());
+  // this ensures correct formatting for years depending on negative or positive value
+  if (attribute < 0){
+    $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute.slice(1) + ' BCE</h2>')
+  } else {
+    $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute + ' CE</h2>');
   }
 }
 
-function buttonFactory(map) {
-
-  // attaches event listeners to the culture buttons in the sidebar
-  let buttons = $(":button");
-  for (let i = 0; i < buttons.length; i++) {
-    let buttonID = buttons[i].id;
-    buttons[i].state = 'off';
-    buttons[i].addEventListener('click', function(){
-      updateMarkerColor(buttonID, map); // callback function can be changed to repurpose this code
-    })
-  }
-}
-
+// callback function for culture button click event listener
 function updateMarkerColor(buttonID, map) {
   // the buttonID handed off here comes from the feature value assigned to the listener
 
@@ -328,7 +352,7 @@ function updateMarkerColor(buttonID, map) {
   };
 
   let onColor = Color[buttonID];
-  buttonController(buttonID, Color); //changes button color
+  changeButtonColor(buttonID, Color); //changes button color
 
   // THIS ALL WORKS, BUT...
   // it would probably be better to use layergroups, yes?
@@ -376,31 +400,38 @@ function updateMarkerColor(buttonID, map) {
   });
 }
 
-function buttonController(buttonID, Color) {
-  // changes the color of the buttons based on state
+// changes the color of the buttons based on state
+function changeButtonColor(buttonID, Color) {
 
-  // first case: turn all off
-  if (buttonID === 'mono') {
-    let buttons = $(":button");
+  if (buttonID === 'mono' || buttonID === 'poly') {
 
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].style.backgroundColor = '#f8f9fa';
-      buttons[i].state = 'off';
+  switch(buttonID) {
+
+    case 'mono':
+      // will always be off, always be the same color
+      let buttonsM = $(":button");
+
+      for (let i = 0; i < buttonsM.length; i++) {
+        buttonsM[i].style.backgroundColor = '#f8f9fa';
+        buttonsM[i].state = 'off';
+      }
+      break;
+
+    case 'poly':
+
+      let buttonsP = $(":button");
+
+      for (let i = 0; i < buttonsP.length; i++) {
+        let id = buttonsP[i].id;
+        buttonsP[i].style.backgroundColor = Color[id];
+        buttonsP[i].style.border = '2px darkgrey';
+        buttonsP[i].state = 'on';
+      }
+      break;
     }
 
-  // second case:  turn all on
-  } else if (buttonID === 'poly'){
-    let buttons = $(":button");
-
-    for (let i = 0; i < buttons.length; i++) {
-      let id = buttons[i].id;
-      buttons[i].style.backgroundColor = Color[id];
-      buttons[i].style.border = '2px darkgrey';
-      buttons[i].state = 'on';
-    }
-
-  // third case:  specific culture button chosen
   } else {
+
     let button = document.getElementById(buttonID); // get the button
     let onColor = Color[buttonID]; // the color the button will be
 
@@ -411,15 +442,16 @@ function buttonController(buttonID, Color) {
         button.style.backgroundColor = onColor;
         button.style.border = '2px darkgrey';
         break;
+
       case 'on':
         button.state = 'off';
         button.style.backgroundColor = null;
         button.style.border = null;
+        break;
 
     }
   }
 }
 
-
-
+// let's make it happen
 $(document).ready(mapFactory);
