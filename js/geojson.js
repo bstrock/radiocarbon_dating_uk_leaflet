@@ -1,15 +1,18 @@
 // creates map from leaflet interactions, adds controls, summons tiles, etc.
 function mapFactory() {
   //create the map
+
   let map = L.map('mapid', {
     attributionControl: false,
-    center: [53, -2.5],
-    zoom: 7
+    maxBounds: [[50, 4], [62, -8.5]],
+    center: [55, -4.5],
+    zoom: 6
   });
 
   //create tiles, add to map
   L.tileLayer('https://api.mapbox.com/styles/v1/bstrock/ckkyvuz9f34ng17qvc0grkfqw/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    minZoom: 6,
     maxZoom: 10,
     tileSize: 512,
     zoomOffset: -1,
@@ -44,6 +47,13 @@ function mapFactory() {
 
   // instantiate slider and add to map
   L.control.sliderControl({position: 'bottomleft'}).addTo(map); // adds slider to map
+
+  map.addEventListener('mousedown', function(){
+    if (timer !== null){
+      stopPlayback();
+    }
+  });
+
 }
 
 // extends control class to enable time legend
@@ -62,6 +72,7 @@ function makeLegend(map) {
       div.style.padding = '.5em';
       div.style.borderStyle = 'solid';
       div.style.borderWidth = '2px';
+      div.style.borderColor = 'darkgrey';
       div.style.borderRadius = '5px';
       return div;
     },
@@ -84,8 +95,10 @@ function makeSliderControl(map) {
       div.style.padding = '.5em';
       div.style.borderStyle = 'solid';
       div.style.borderWidth = '2px';
+      div.style.borderColor = 'darkgrey';
       div.style.borderRadius = '5px';
       div.style.width = '300px';
+
 
       // stops map from moving when slider is clicked
       L.DomEvent.disableClickPropagation(div);
@@ -203,7 +216,8 @@ function buttonFactory(map) {
 // creates the slider input element, initializes its range values, and adds event listener
 function createSequenceControls(map, attributes) {
   //create range input element (slider)
-  $('.slider-control').append('<input class="range-slider" type="range">');
+  $('.slider-control').append('<div class="container" id="time-container"><span class="play-button" id="play-button"></span><input class="range-slider" type="range" id="range"></div>');
+  //$('.slider-control').append('');
 
   // define properties of slider
   // change this array to change input values
@@ -212,14 +226,56 @@ function createSequenceControls(map, attributes) {
     min: 0,
     max: 2364,
     value: 0,
-    step: 1
+    step: 1,
+  });
+
+  $('#play-button').attr({
+    state: 'off'
   });
 
   // slider movement event listener- hands off to update function
-  $('.range-slider').on('input', function () {
+  $('.range-slider').on('input', function() {
     let index = $(this).val();
     updatePropSymbols(map, attributes[index]);
+    updateTimeLegend(attributes[index], 5); // gives the time legend the correct year to show
+    if (timer !== null) {
+      stopPlayback();
+    }
   });
+
+  $('#play-button').on('click', function() {
+    let state = $(this).attr('state');
+
+    switch(state){
+      case 'off':
+        $(this).attr('state', 'on');
+
+        let slider = document.getElementById("range");
+        if (slider.value === slider.max){
+          slider.value = 0;
+          }
+        timer = setInterval(function(){
+        if (slider.value === slider.max){
+          clearInterval(timer);
+        }
+        slider.stepUp(1);
+        updateTimeLegend(attributes[slider.value], 100);
+        updatePropSymbols(map, attributes[slider.value]);
+
+        }, 5);
+        break;
+
+      case 'on':
+
+        // get value
+        stopPlayback();
+        let val = document.getElementById("range");
+        updateTimeLegend(attributes[val.value], 100);
+        break;
+    }
+
+  });
+
 }
 
 // when we need point symbols from geojson data, we turn to this symbol, which calls the pointToLayer
@@ -261,6 +317,11 @@ function symbolFactory(feature, latlng, attribute) {
   // make me a popup
   createPopup(feature.properties, layer);
 
+  layer.addEventListener('click', function(){
+    if (timer !== null) {
+      stopPlayback();
+    }});
+
   // we all need a little culture
   layer.culture = feature.properties.Culture || {};
   return layer;
@@ -281,8 +342,11 @@ function calcPropRadius(attValue) {
 // gets attribute data and populates popups
 function createPopup(properties, layer){
     // generate popup content
-  let popUpContent = "<p><b>Site Name: </b>" + properties['SiteName'] + "<br>" +
-                      "<b>Material: </b>" + properties['Material'] +  "<br>";
+  let popUpContent = "<p><b>Site Name: </b>" + properties['SiteName'] + "<br>";
+
+    if (properties['Material']) {
+      popUpContent += "<b>Material: </b>" + properties['Material'] + "<br>";
+    }
 
     if (properties['MaterialSpecies']){
       popUpContent += "<b>Material Species: </b>" + properties['MaterialSpecies'] +  "<br>";
@@ -304,8 +368,6 @@ function updatePropSymbols(map, attribute){
   //returns: none (NOTE- updates properties of existing objects!)
   map.closePopup();  // the slider is moving, close the popups
 
-  updateTimeLegend(attribute); // gives the time legend the correct year to show
-
   // each marker is a layer- this method iterates through them
   map.eachLayer(function(layer){
     // check for existence of a feature
@@ -321,15 +383,16 @@ function updatePropSymbols(map, attribute){
 }
 
 // business function that formats and displays values for year in the time legend
-function updateTimeLegend(attribute){
+function updateTimeLegend(attribute, interval){
   // updates the time legend with the correct value
   // displays in multiples of ten (decades)
-
+  if (attribute % interval === 0){
   // this ensures correct formatting for years depending on negative or positive value
-  if (attribute < 0){
-    $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute.slice(1) + ' BCE</h2>')
-  } else {
-    $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute + ' CE</h2>');
+    if (attribute < 0){
+      $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute.slice(1) + ' BCE</h2>')
+    } else {
+      $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute + ' CE</h2>');
+    }
   }
 }
 
@@ -339,16 +402,16 @@ function updateMarkerColor(buttonID, map) {
 
   // color dictionary
   let Color = {
-    'British EN': 'rgba(166, 206, 227, .5)',
-    'Grooved Ware': 'rgba(51, 160, 44, .5)',
-    'EBA': 'rgba(251, 154, 153, 0.5)',
-    'British MN': 'rgba(202, 178, 214, .5)',
-    'British LN': 'rgba(253, 191, 111, .5)',
-    'Late Meso': 'rgba(227, 26, 28, .5)',
-    'Obanian': 'rgba(106, 61, 154, .5)',
-    'Pitted Ware': 'rgba(255, 127, 0, .5)',
-    'Bell Beaker': 'rgba(178, 223, 138, 0.5)',
-    'Orkney': 'rgba(31, 120, 180, .5)',
+    'British EN': 'rgba(166, 206, 227, .75)',
+    'Grooved Ware': 'rgba(51, 160, 44, .75)',
+    'EBA': 'rgba(251, 154, 153, .75)',
+    'British MN': 'rgba(202, 178, 214, .75)',
+    'British LN': 'rgba(253, 191, 111, .75)',
+    'Late Meso': 'rgba(227, 26, 28, .75)',
+    'Obanian': 'rgba(106, 61, 154, .75)',
+    'Pitted Ware': 'rgba(255, 127, 0, .75)',
+    'Bell Beaker': 'rgba(178, 223, 138, .75)',
+    'Orkney': 'rgba(31, 120, 180, .75)',
   };
 
   let onColor = Color[buttonID];
@@ -365,7 +428,8 @@ function updateMarkerColor(buttonID, map) {
       // first case: resets all markers to white if mono is clicked
       if (buttonID === 'mono') {
         let options = {
-          fillColor: 'white'
+          fillColor: 'white',
+          fillOpacity: .5
         };
         layer.setStyle(options);
 
@@ -390,7 +454,8 @@ function updateMarkerColor(buttonID, map) {
           } else {
             // this changes a colored marker to white
             let options = {
-              fillColor: 'white'
+              fillColor: 'white',
+              fillOpacity: .5
             };
             layer.setStyle(options);
           }
@@ -453,5 +518,11 @@ function changeButtonColor(buttonID, Color) {
   }
 }
 
+function stopPlayback() {
+  $('#play-button').attr('state', 'off');
+  clearInterval(timer);
+  let val = document.getElementById("range");
+}
+timer = null;
 // let's make it happen
 $(document).ready(mapFactory);

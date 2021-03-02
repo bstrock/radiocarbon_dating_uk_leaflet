@@ -38,7 +38,7 @@
 
       <!-- left sidebar panel column -->
 
-      <div class="col-sm-6 col-md-2 col-lg-4 col-xl-2 panel-body align-items-center">
+      <div class="col-sm-6 col-md-2 col-lg-4 col-xl-2 panel-body align-items-center id='leftcol'">
 
         <!-- top left card content -->
         <div class="card align-items-center">
@@ -92,15 +92,12 @@
              <b>Symbols</b> are <i>semi-transparent</i>.  Brighter colors suggest that several artifacts may overlap in time at that site.<br>
              <b>Symbols</b> are <i>encircled by white rings</i>.  More rings at one site suggest several artifacts which don't overlap in time.
            </div>
-         </div> <!-- close top right card -->
 
-        <div class="spacer" style='margin: .5em'></div>
+        <div class="spacer" style='margin: .25em'></div>
 
-        <!-- bottom right card (button panel) -->
-        <div class="card align-items-center">
-           <div class="container" style="padding-bottom: .5em; padding-top: .5em;">
-             <div class="btn-group-vertical btn-group" id="culture-buttons">
-               <button type="button" class="btn btn-light" id="mono" style="background-color: white;">No Selection (monochrome)</button>
+           <div class="container align-items-center" style="padding-bottom: .5em; padding-top: .5em;">
+             <div class="btn-group-vertical align-items-center btn-group" style="display: block;" id="culture-buttons">
+               <button type="button" class="btn btn-light" id="mono" style="background-color: white;">No Selection</button>
                <button type="button" class="btn btn-light" id="poly">Select All</button>
                <button type="button" class="btn btn-light" id="British EN">British Early Neolithic</button>
                <button type="button" class="btn btn-light" id="Grooved Ware">Grooved Ware</button>
@@ -117,7 +114,6 @@
          </div> <!-- close bottom right card -->
       </div> <!-- close right column -->
     </div> <!-- close row -->
- </div> <!-- close background div -->
 
 
     </div> <!-- end right column -->
@@ -125,6 +121,7 @@
 
   <!-- Add your site or application content here -->
   <script src="js/jquery-3.5.1.js"></script>
+
   <script src="js/leaflet.js"></script>
   <script src="js/vendor/modernizr-3.11.2.min.js"></script>
   <script src="js/bootstrap.js"></script>

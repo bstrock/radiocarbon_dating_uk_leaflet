@@ -2292,7 +2292,6 @@ textarea.form-control {
   display: inline-block;
   font-weight: 400;
   text-align: center;
-  white-space: nowrap;
   vertical-align: middle;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -3171,6 +3170,8 @@ input[type="button"].btn-block {
   display: -ms-inline-flexbox;
   display: inline-flex;
   vertical-align: middle;
+    border: .5px solid grey;
+  border-radius: 3px;
 }
 
 .btn-group > .btn,
@@ -4381,6 +4382,7 @@ input[type="button"].btn-block {
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
+  height: available;
 }
 
 .card > hr {
