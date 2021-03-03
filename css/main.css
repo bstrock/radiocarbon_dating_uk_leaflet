@@ -125,8 +125,10 @@ body {
 input[type=range] {
   height: 30px;
   -webkit-appearance: none;
+  alignment: right;
+  display: inline-block;
   margin: 10px 0;
-  width: 85%;
+  width: 60%;
   background: transparent;
   padding-left: .4em;
 }
@@ -246,18 +248,45 @@ input[type=range]:focus::-ms-fill-upper {
     background: url('../img/play.svg') no-repeat top left;
     background-size: contain;
     cursor: pointer;
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     float: left;
     top: 50%;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 7px;
+  margin-bottom: 7px;
 
 }
 
 #time-container{
   vertical-align: center;
   position: center;
+}
+
+#play-speed{
+  width: 30px;
+  height: 30px;
+  font-size: x-large;
+  top: 50%;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-left: .25em;
+  display: inline-block;
+  float: left;
+  text-align: center;
+  cursor: pointer;
+
+}
+
+#year-view{
+  width: 70px;
+  position: absolute;
+  margin-left: .5em;
+}
+
+#era-view{
+  float: right;
+  margin-right: 1em;
+
 }
 
 /* ==========================================================================

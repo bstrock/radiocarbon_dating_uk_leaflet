@@ -65,7 +65,7 @@ function makeLegend(map) {
       let div = L.DomUtil.create("div", "time-legend");
 
       // I'd like to get the styling done in CSS, but this worked first.
-      div.innerHTML = '<h2 style="font-family:\'Ibarra Real Nova">Year: 10000 BCE</h2>';
+      div.innerHTML = '<h2 style="font-family:\'Ibarra Real Nova">Year:&nbsp;<span id="year-view">10000</span><span id="era-view"> BCE</span></h2>';
       div.style.backgroundColor = 'lightgrey';
       div.style.textAlign = 'left';
       div.style.width = '300px';
@@ -98,6 +98,7 @@ function makeSliderControl(map) {
       div.style.borderColor = 'darkgrey';
       div.style.borderRadius = '5px';
       div.style.width = '300px';
+      div.style.margin = '7px';
 
 
       // stops map from moving when slider is clicked
@@ -216,7 +217,7 @@ function buttonFactory(map) {
 // creates the slider input element, initializes its range values, and adds event listener
 function createSequenceControls(map, attributes) {
   //create range input element (slider)
-  $('.slider-control').append('<div class="container" id="time-container"><span class="play-button" id="play-button"></span><input class="range-slider" type="range" id="range"></div>');
+  $('.slider-control').append('<div class="container" id="time-container"><span class="play-button" id="play-button"></span><span class="" id="play-speed">x2</span><input class="range-slider" type="range" id="range"></div>');
   //$('.slider-control').append('');
 
   // define properties of slider
@@ -237,7 +238,16 @@ function createSequenceControls(map, attributes) {
   $('.range-slider').on('input', function() {
     let index = $(this).val();
     updatePropSymbols(map, attributes[index]);
-    updateTimeLegend(attributes[index], 5); // gives the time legend the correct year to show
+    updateTimeLegend(attributes[index], 10); // gives the time legend the correct year to show
+    if (timer !== null) {
+      stopPlayback();
+    }
+  });
+
+  $('.range-slider').on('click', function() {
+    let index = $(this).val();
+    updatePropSymbols(map, attributes[index]);
+    updateTimeLegend(attributes[index], 10); // gives the time legend the correct year to show
     if (timer !== null) {
       stopPlayback();
     }
@@ -249,7 +259,8 @@ function createSequenceControls(map, attributes) {
     switch(state){
       case 'off':
         $(this).attr('state', 'on');
-
+        let pause = 'img/pause.svg';
+        $(this).css('background-image', "url(" + pause + ")");
         let slider = document.getElementById("range");
         if (slider.value === slider.max){
           slider.value = 0;
@@ -266,13 +277,35 @@ function createSequenceControls(map, attributes) {
         break;
 
       case 'on':
-
+        let play = 'img/play.svg';
+        $(this).css('background-image', "url(" + play + ")");
         // get value
         stopPlayback();
         let val = document.getElementById("range");
         updateTimeLegend(attributes[val.value], 100);
         break;
     }
+
+    $('#play-speed').on('click', function(){
+      let currentSpeed = $('#play-speed').html();
+      switch(currentSpeed){
+        case 'x1':
+          speed = 2;
+          $('#play-speed').html('x2');
+          $('.range-slider').attr('step', '2');
+          console.log($('#range-slider'));
+          break;
+        case 'x2':
+          speed = 4;
+          $('#play-speed').html('x4');
+          $('.range-slider').attr('step', '4');
+          break;
+        case 'x4':
+          speed = 1;
+          $('#play-speed').html('x1');
+          $('.range-slider').attr('step', '1');
+      }
+    })
 
   });
 
@@ -334,7 +367,7 @@ function calcPropRadius(attValue) {
   inputs:  attributes value to calculate
   returns:  radius (numeric value) */
 
-  let radius = 40 * Math.pow(attValue, .2)
+  let radius = 40 * Math.pow(attValue, .2);
 
   return radius;
 }
@@ -383,15 +416,38 @@ function updatePropSymbols(map, attribute){
 }
 
 // business function that formats and displays values for year in the time legend
-function updateTimeLegend(attribute, interval){
+function updateTimeLegend(attribute, interval) {
+
   // updates the time legend with the correct value
   // displays in multiples of ten (decades)
-  if (attribute % interval === 0){
-  // this ensures correct formatting for years depending on negative or positive value
-    if (attribute < 0){
-      $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute.slice(1) + ' BCE</h2>')
-    } else {
-      $('.time-legend').html('<h2 style="font-family:\'Ibarra Real Nova">Year: ' + attribute + ' CE</h2>');
+  let attVal = Math.abs(attribute);
+  if (attribute % interval === 0) {
+    // this ensures correct formatting for years depending on negative or positive value
+    if (attribute < 0) {
+      $('#year-view').html(attribute.slice(1));
+      $('#era-view').html('BCE');
+
+      if (attVal === 10000) {
+        $('#era-view').css('margin-right', '1em');
+        console.log($('#era-view').css('margin-right'));
+        } else if (attVal < 100) {
+        $('#era-view').css('margin-right', '2.3em');
+        console.log($('#era-view').css('margin-right'));
+      } else if (attVal < 1000) {
+        $('#era-view').css('margin-right', '2em');
+        console.log($('#era-view').css('margin-right'));
+      } else if (attVal < 10000) {
+        $('#era-view').css('margin-right', '1.45em');
+        console.log($('#era-view').css('margin-right'));
+      }
+    } else if (attribute > 0) {
+      $('#year-view').html(attribute);
+      if (attVal < 1000) {
+        $('#era-view').html('CE').css('margin-right', '2.7em');
+      } else if (attVal < 10000) {
+        $('#era-view').css('margin-right', '2.3em');
+        console.log($('#era-view').css('margin-right'));
+      }
     }
   }
 }
@@ -521,8 +577,8 @@ function changeButtonColor(buttonID, Color) {
 function stopPlayback() {
   $('#play-button').attr('state', 'off');
   clearInterval(timer);
-  let val = document.getElementById("range");
 }
+speed = 2;
 timer = null;
 // let's make it happen
 $(document).ready(mapFactory);
