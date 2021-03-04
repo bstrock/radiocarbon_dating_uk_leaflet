@@ -50,7 +50,11 @@ function mapFactory() {
 
   map.addEventListener('mousedown', function(){
     if (timer !== null){
-      stopPlayback();
+      $('#play-button').attr('state', 'off');
+      let play = 'img/play.svg';
+      $('#play-button').css('background-image', "url(" + play + ")");
+      clearInterval(timer);
+      timer = null;
     }
   });
 
@@ -234,13 +238,21 @@ function createSequenceControls(map, attributes) {
     state: 'off'
   });
 
+  $('#play-speed').attr({
+    speed: speed
+  });
+
   // slider movement event listener- hands off to update function
   $('.range-slider').on('input', function() {
     let index = $(this).val();
     updatePropSymbols(map, attributes[index]);
     updateTimeLegend(attributes[index], 10); // gives the time legend the correct year to show
     if (timer !== null) {
-      stopPlayback();
+      $('#play-button').attr('state', 'off');
+      let play = 'img/play.svg';
+      $('#play-button').css('background-image', "url(" + play + ")");
+      clearInterval(timer);
+      timer = null;
     }
   });
 
@@ -249,65 +261,82 @@ function createSequenceControls(map, attributes) {
     updatePropSymbols(map, attributes[index]);
     updateTimeLegend(attributes[index], 10); // gives the time legend the correct year to show
     if (timer !== null) {
-      stopPlayback();
+      $('#play-button').attr('state', 'off');
+      let play = 'img/play.svg';
+      $('#play-button').css('background-image', "url(" + play + ")");
+      clearInterval(timer);
+      timer = null;
     }
   });
 
   $('#play-button').on('click', function() {
     let state = $(this).attr('state');
 
-    switch(state){
+    switch (state) {
       case 'off':
         $(this).attr('state', 'on');
         let pause = 'img/pause.svg';
         $(this).css('background-image', "url(" + pause + ")");
         let slider = document.getElementById("range");
-        if (slider.value === slider.max){
+        if (slider.value === slider.max) {
           slider.value = 0;
-          }
-        timer = setInterval(function(){
-        if (slider.value === slider.max){
+          $('#play-button').attr('state', 'off');
+          let play = 'img/play.svg';
+          $('#play-button').css('background-image', "url(" + play + ")");
           clearInterval(timer);
+          timer = null;
+          break;
         }
-        slider.stepUp(1);
-        updateTimeLegend(attributes[slider.value], 100);
-        updatePropSymbols(map, attributes[slider.value]);
+        timer = setInterval(function () {
+          if (slider.value === slider.max) {
+            $('#play-button').attr('state', 'off');
+            let play = 'img/play.svg';
+            $('#play-button').css('background-image', "url(" + play + ")");
+            clearInterval(timer);
+            timer = null;
+          }
+          slider.stepUp(1);
+          updateTimeLegend(attributes[slider.value], 100);
+          updatePropSymbols(map, attributes[slider.value]);
 
         }, 5);
         break;
 
       case 'on':
-        let play = 'img/play.svg';
-        $(this).css('background-image', "url(" + play + ")");
         // get value
-        stopPlayback();
+        $('#play-button').attr('state', 'off');
+        let play = 'img/play.svg';
+        $('#play-button').css('background-image', "url(" + play + ")");
+        clearInterval(timer);
+        timer = null;
         let val = document.getElementById("range");
         updateTimeLegend(attributes[val.value], 100);
         break;
     }
-
-    $('#play-speed').on('click', function(){
-      let currentSpeed = $('#play-speed').html();
-      switch(currentSpeed){
-        case 'x1':
-          speed = 2;
-          $('#play-speed').html('x2');
-          $('.range-slider').attr('step', '2');
-          console.log($('#range-slider'));
-          break;
-        case 'x2':
-          speed = 4;
-          $('#play-speed').html('x4');
-          $('.range-slider').attr('step', '4');
-          break;
-        case 'x4':
-          speed = 1;
-          $('#play-speed').html('x1');
-          $('.range-slider').attr('step', '1');
-      }
-    })
-
   });
+
+  $('#play-speed').on('click', function(){
+    let currentSpeed = $('#play-speed').attr('speed');
+    switch(currentSpeed){
+      case '1':
+        speed = 2;
+        $('#play-speed').attr('speed', speed);
+        $('#play-speed').html('x2');
+        $('.range-slider').attr('step', '2');
+        break;
+      case '2':
+        speed = 4;
+        $('#play-speed').attr('speed', speed);
+        $('#play-speed').html('x4');
+        $('.range-slider').attr('step', '4');
+        break;
+      case '4':
+        speed = 1;
+        $('#play-speed').attr('speed', speed);
+        $('#play-speed').html('x1');
+        $('.range-slider').attr('step', '1');
+    }
+    })
 
 }
 
@@ -352,7 +381,11 @@ function symbolFactory(feature, latlng, attribute) {
 
   layer.addEventListener('click', function(){
     if (timer !== null) {
-      stopPlayback();
+      $('#play-button').attr('state', 'off');
+      let play = 'img/play.svg';
+      $('#play-button').css('background-image', "url(" + play + ")");
+      clearInterval(timer);
+      timer = null;
     }});
 
   // we all need a little culture
@@ -429,24 +462,20 @@ function updateTimeLegend(attribute, interval) {
 
       if (attVal === 10000) {
         $('#era-view').css('margin-right', '1em');
-        console.log($('#era-view').css('margin-right'));
         } else if (attVal < 100) {
         $('#era-view').css('margin-right', '2.3em');
-        console.log($('#era-view').css('margin-right'));
       } else if (attVal < 1000) {
         $('#era-view').css('margin-right', '2em');
-        console.log($('#era-view').css('margin-right'));
       } else if (attVal < 10000) {
         $('#era-view').css('margin-right', '1.45em');
-        console.log($('#era-view').css('margin-right'));
       }
     } else if (attribute > 0) {
+      $('#era-view').html('CE').css('margin-right', '2.7em');
       $('#year-view').html(attribute);
       if (attVal < 1000) {
-        $('#era-view').html('CE').css('margin-right', '2.7em');
+
       } else if (attVal < 10000) {
         $('#era-view').css('margin-right', '2.3em');
-        console.log($('#era-view').css('margin-right'));
       }
     }
   }
@@ -575,8 +604,7 @@ function changeButtonColor(buttonID, Color) {
 }
 
 function stopPlayback() {
-  $('#play-button').attr('state', 'off');
-  clearInterval(timer);
+
 }
 speed = 2;
 timer = null;
