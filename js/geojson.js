@@ -220,13 +220,10 @@ function buttonFactory(map) {
 
 // creates the slider input element, initializes its range values, and adds event listener
 function createSequenceControls(map, attributes) {
-  //create range input element (slider)
+  // create slider controls
   $('.slider-control').append('<div class="container" id="time-container"><span class="play-button" id="play-button"></span><span class="" id="play-speed">x2</span><input class="range-slider" type="range" id="range"></div>');
-  //$('.slider-control').append('');
 
-  // define properties of slider
-  // change this array to change input values
-  // why is it broken in chrome?
+  // configure range slider values
   $('.range-slider').attr({
     min: 0,
     max: 2364,
@@ -234,41 +231,41 @@ function createSequenceControls(map, attributes) {
     step: 1,
   });
 
+  // initialize play button
   $('#play-button').attr({
     state: 'off'
   });
 
+  // initialize play speed
   $('#play-speed').attr({
     speed: speed
   });
 
-  // slider movement event listener- hands off to update function
+  // slider movement event listener- hands off to update functions
   $('.range-slider').on('input', function() {
     let index = $(this).val();
     updatePropSymbols(map, attributes[index]);
     updateTimeLegend(attributes[index], 10); // gives the time legend the correct year to show
+
+    // stops playback if slider is moved
     if (timer !== null) {
-      $('#play-button').attr('state', 'off');
-      let play = 'img/play.svg';
-      $('#play-button').css('background-image', "url(" + play + ")");
-      clearInterval(timer);
-      timer = null;
+      stopPlayback();
     }
   });
 
+  // without this, only dragging range input will correctly update symbols and legend
   $('.range-slider').on('click', function() {
     let index = $(this).val();
     updatePropSymbols(map, attributes[index]);
     updateTimeLegend(attributes[index], 10); // gives the time legend the correct year to show
+
+    // stops playback if slider is clicked
     if (timer !== null) {
-      $('#play-button').attr('state', 'off');
-      let play = 'img/play.svg';
-      $('#play-button').css('background-image', "url(" + play + ")");
-      clearInterval(timer);
-      timer = null;
+      stopPlayback();
     }
   });
 
+  // controls playback button
   $('#play-button').on('click', function() {
     let state = $(this).attr('state');
 
@@ -278,46 +275,47 @@ function createSequenceControls(map, attributes) {
         let pause = 'img/pause.svg';
         $(this).css('background-image', "url(" + pause + ")");
         let slider = document.getElementById("range");
+
+        // this block resets slider if play is clicked when at max value
         if (slider.value === slider.max) {
           slider.value = 0;
-          $('#play-button').attr('state', 'off');
-          let play = 'img/play.svg';
-          $('#play-button').css('background-image', "url(" + play + ")");
-          clearInterval(timer);
-          timer = null;
-          break;
+          stopPlayback();
+          break; // this is really important!!!!
         }
+        // initializes the timer which advances the range-slider to control playback functionality
         timer = setInterval(function () {
+          // this block resets slider if playback reaches max value
           if (slider.value === slider.max) {
-            $('#play-button').attr('state', 'off');
-            let play = 'img/play.svg';
-            $('#play-button').css('background-image', "url(" + play + ")");
-            clearInterval(timer);
-            timer = null;
+            slider.value = 0;
+            stopPlayback();
           }
-          slider.stepUp(1);
-          updateTimeLegend(attributes[slider.value], 100);
+          slider.stepUp(1); // playback speed is actually controlled by size of step
+
+          // less detail on time legend during playback
+          updateTimeLegend(attributes[slider.value], 100); // otherwise the year flickers like crazy and it's distracting
           updatePropSymbols(map, attributes[slider.value]);
 
-        }, 5);
+        }, 5); // dox say lowest value is 10- not touching it
         break;
 
       case 'on':
-        // get value
-        $('#play-button').attr('state', 'off');
-        let play = 'img/play.svg';
-        $('#play-button').css('background-image', "url(" + play + ")");
-        clearInterval(timer);
-        timer = null;
-        let val = document.getElementById("range");
-        updateTimeLegend(attributes[val.value], 100);
+        stopPlayback();
+        slider = document.getElementById("range");
+        updateTimeLegend(attributes[slider.value], 100); // enforces correct time display when stopping
         break;
     }
   });
 
+  // playback speed controls
+  // all in all, this was really challenging
+
   $('#play-speed').on('click', function(){
     let currentSpeed = $('#play-speed').attr('speed');
     switch(currentSpeed){
+
+      // in each case, the following are configured:
+      // speed global variable, button attribute, button html (text), input slider step value
+      // clicking one cycles to the next: x1-x2-x4
       case '1':
         speed = 2;
         $('#play-speed').attr('speed', speed);
@@ -379,6 +377,7 @@ function symbolFactory(feature, latlng, attribute) {
   // make me a popup
   createPopup(feature.properties, layer);
 
+  // turn off playback if open popup clicked
   layer.addEventListener('click', function(){
     if (timer !== null) {
       $('#play-button').attr('state', 'off');
@@ -407,9 +406,11 @@ function calcPropRadius(attValue) {
 
 // gets attribute data and populates popups
 function createPopup(properties, layer){
+
     // generate popup content
   let popUpContent = "<p><b>Site Name: </b>" + properties['SiteName'] + "<br>";
 
+    // not all fields have content...prevent blank entries
     if (properties['Material']) {
       popUpContent += "<b>Material: </b>" + properties['Material'] + "<br>";
     }
@@ -452,14 +453,16 @@ function updatePropSymbols(map, attribute){
 function updateTimeLegend(attribute, interval) {
 
   // updates the time legend with the correct value
-  // displays in multiples of ten (decades)
-  let attVal = Math.abs(attribute);
+  let attVal = Math.abs(attribute);  // removes negative sign from integers for display formatting
+  // this ensures correct formatting for years depending on negative or positive value
+
   if (attribute % interval === 0) {
-    // this ensures correct formatting for years depending on negative or positive value
     if (attribute < 0) {
       $('#year-view').html(attribute.slice(1));
       $('#era-view').html('BCE');
 
+      // this if-else block locates the BCE/CE text according to the length of the year string
+      // otherwise we have years that look like this:  40           CE
       if (attVal === 10000) {
         $('#era-view').css('margin-right', '1em');
         } else if (attVal < 100) {
@@ -469,11 +472,11 @@ function updateTimeLegend(attribute, interval) {
       } else if (attVal < 10000) {
         $('#era-view').css('margin-right', '1.45em');
       }
+      // positive values formatted here
     } else if (attribute > 0) {
       $('#era-view').html('CE').css('margin-right', '2.7em');
       $('#year-view').html(attribute);
       if (attVal < 1000) {
-
       } else if (attVal < 10000) {
         $('#era-view').css('margin-right', '2.3em');
       }
@@ -553,6 +556,7 @@ function updateMarkerColor(buttonID, map) {
 // changes the color of the buttons based on state
 function changeButtonColor(buttonID, Color) {
 
+  // controls top two buttons (all or nothing toggle)
   if (buttonID === 'mono' || buttonID === 'poly') {
 
   switch(buttonID) {
@@ -568,13 +572,13 @@ function changeButtonColor(buttonID, Color) {
       break;
 
     case 'poly':
+      // turns on all colors
 
       let buttonsP = $(":button");
 
       for (let i = 0; i < buttonsP.length; i++) {
         let id = buttonsP[i].id;
         buttonsP[i].style.backgroundColor = Color[id];
-        buttonsP[i].style.border = '2px darkgrey';
         buttonsP[i].state = 'on';
       }
       break;
@@ -582,6 +586,7 @@ function changeButtonColor(buttonID, Color) {
 
   } else {
 
+    // individual button functionality
     let button = document.getElementById(buttonID); // get the button
     let onColor = Color[buttonID]; // the color the button will be
 
@@ -590,13 +595,11 @@ function changeButtonColor(buttonID, Color) {
       case 'off':
         button.state = 'on';
         button.style.backgroundColor = onColor;
-        button.style.border = '2px darkgrey';
         break;
 
       case 'on':
         button.state = 'off';
         button.style.backgroundColor = null;
-        button.style.border = null;
         break;
 
     }
@@ -604,9 +607,18 @@ function changeButtonColor(buttonID, Color) {
 }
 
 function stopPlayback() {
+  // change button state, change background image, clear and replace interval
 
+  $('#play-button').attr('state', 'off');
+  let play = 'img/play.svg';
+  $('#play-button').css('background-image', "url(" + play + ")");
+  clearInterval(timer);
+  timer = null;
 }
+
+// global variables controlling playback speed
 speed = 2;
 timer = null;
+
 // let's make it happen
 $(document).ready(mapFactory);
