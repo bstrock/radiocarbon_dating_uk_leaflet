@@ -238,14 +238,14 @@ function createSequenceControls(map, attributes) {
 
   // initialize play speed
   $('#play-speed').attr({
-    speed: speed
+    speed: speed[0]
   });
 
   // slider movement event listener- hands off to update functions
   $('.range-slider').on('input', function() {
     let index = $(this).val();
     updatePropSymbols(map, attributes[index]);
-    updateTimeLegend(attributes[index], 10); // gives the time legend the correct year to show
+    updateTimeLegend(attributes[index], 5); // gives the time legend the correct year to show
 
     // stops playback if slider is moved
     if (timer !== null) {
@@ -257,7 +257,7 @@ function createSequenceControls(map, attributes) {
   $('.range-slider').on('click', function() {
     let index = $(this).val();
     updatePropSymbols(map, attributes[index]);
-    updateTimeLegend(attributes[index], 10); // gives the time legend the correct year to show
+    updateTimeLegend(attributes[index], 5); // gives the time legend the correct year to show
 
     // stops playback if slider is clicked
     if (timer !== null) {
@@ -292,7 +292,7 @@ function createSequenceControls(map, attributes) {
           slider.stepUp(1); // playback speed is actually controlled by size of step
 
           // less detail on time legend during playback
-          updateTimeLegend(attributes[slider.value], 100); // otherwise the year flickers like crazy and it's distracting
+          updateTimeLegend(attributes[slider.value], speed[1]); // otherwise the year flickers like crazy and it's distracting
           updatePropSymbols(map, attributes[slider.value]);
 
         }, 5); // dox say lowest value is 10- not touching it
@@ -300,8 +300,7 @@ function createSequenceControls(map, attributes) {
 
       case 'on':
         stopPlayback();
-        slider = document.getElementById("range");
-        updateTimeLegend(attributes[slider.value], 100); // enforces correct time display when stopping
+
         break;
     }
   });
@@ -311,26 +310,28 @@ function createSequenceControls(map, attributes) {
 
   $('#play-speed').on('click', function(){
     let currentSpeed = $('#play-speed').attr('speed');
+    console.log('click')
     switch(currentSpeed){
+
 
       // in each case, the following are configured:
       // speed global variable, button attribute, button html (text), input slider step value
       // clicking one cycles to the next: x1-x2-x4
       case '1':
-        speed = 2;
-        $('#play-speed').attr('speed', speed);
+        speed = [2, 50];
+        $('#play-speed').attr('speed', speed[0]);
         $('#play-speed').html('x2');
         $('.range-slider').attr('step', '2');
         break;
       case '2':
-        speed = 4;
-        $('#play-speed').attr('speed', speed);
+        speed = [4, 100];
+        $('#play-speed').attr('speed', speed[0]);
         $('#play-speed').html('x4');
         $('.range-slider').attr('step', '4');
         break;
       case '4':
-        speed = 1;
-        $('#play-speed').attr('speed', speed);
+        speed = [1, 10];
+        $('#play-speed').attr('speed', speed[0]);
         $('#play-speed').html('x1');
         $('.range-slider').attr('step', '1');
     }
@@ -606,6 +607,7 @@ function changeButtonColor(buttonID, Color) {
   }
 }
 
+// stops playback because that has to happen in lots of places
 function stopPlayback() {
   // change button state, change background image, clear and replace interval
 
@@ -617,7 +619,7 @@ function stopPlayback() {
 }
 
 // global variables controlling playback speed
-speed = 2;
+speed = [2, 50];
 timer = null;
 
 // let's make it happen
