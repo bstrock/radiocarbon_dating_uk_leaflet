@@ -221,7 +221,7 @@ function buttonFactory(map) {
 // creates the slider input element, initializes its range values, and adds event listener
 function createSequenceControls(map, attributes) {
   // create slider controls
-  $('.slider-control').append('<div class="container" id="time-container"><span class="play-button" id="play-button"></span><span class="" id="play-speed">x2</span><input class="range-slider" type="range" id="range"></div>');
+  $('.slider-control').append('<div class="container" id="time-container"><span class="play-button" id="play-button"></span><span class="" id="play-speed">x2</span><input class="range-slider" type="range" id="range"><span class="replay-button" id="replay-button"></span></div>');
 
   // configure range slider values
   $('.range-slider').attr({
@@ -335,7 +335,15 @@ function createSequenceControls(map, attributes) {
         $('#play-speed').html('x1');
         $('.range-slider').attr('step', '1');
     }
-    })
+    });
+
+  $("#replay-button").on('click', function() {
+    let slider = document.getElementById("range");
+    slider.value = 0;
+    stopPlayback();
+    updateTimeLegend(attributes[slider.value], speed[1]);
+    updatePropSymbols(map, attributes[slider.value]);
+  })
 
 }
 

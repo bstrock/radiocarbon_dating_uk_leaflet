@@ -291,6 +291,20 @@ input[type=range]:focus::-ms-fill-upper {
 
 }
 
+.replay-button {
+    background: url('../img/replay.svg') no-repeat top left;
+    background-size: contain;
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    float: right;
+    top: 50%;
+  margin-top:10px;
+  margin-bottom: 10px;
+
+}
+
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
