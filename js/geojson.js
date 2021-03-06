@@ -214,7 +214,7 @@ function buttonFactory(map) {
     buttons[i].state = 'off'; // give it an off state to toggle
     buttons[i].addEventListener('click', function(){
       updateMarkerColor(buttonID, map); // callback function can be changed to repurpose this code
-    })
+      });
   }
 }
 
