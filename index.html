@@ -25,56 +25,109 @@
 </head>
 
 <body>
-<div class="bg">
-<div class="jumbotron-fluid" style='height: 12em'>
+    <div class="bg">
+        <div class="jumbotron-fluid" style='height: 12em'>
   <h4 class="display-3" style="font-family:'Ibarra Real Nova" id="top-title">What Was Left:</h4>
     <h6 class="display-4" style="font-family:'Ibarra Real Nova"id="top-sub-title">Archaeology and the Radiocarbon Record of the UK</h6></div>
 
-  <!-- top-level container -->
-  <div class="container-fluid align-content-center">
+        <!-- top-level container -->
+        <div class="container-fluid align-content-center">
 
-    <!-- main content row -->
-    <div class="row container-fluid">
+        <!-- main content row -->
+            <div class="row container-fluid">
 
-      <!-- left sidebar panel column -->
+        <!-- left sidebar panel column -->
 
-      <div class="col-sm-6 col-md-2 col-lg-4 col-xl-2 panel-body align-items-center id='leftcol'">
+                <div class="col-sm-6 col-md-2 col-lg-4 col-xl-2 align-items-center" id='leftcol'>
+                    <div class="card modal-card">
+                        <div class="panel-group" id="accordion">
+                            <div class="card-header mx-1 text-center mt-2" style="padding: .25em">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                The Younger Dryas</a></h4>
+                            </div>
+                            <div id="collapse1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="container-fluid">
+                                        <img src="img/dryas.jpg" class="card-img-top card-pic" style="padding-top:.5em">
+                                    </div>
+                                    <div class="card-body"><p>Starting around 13,000 BCE and lasting for some 2,000 years, the Younger Dryas
+                                    Climactic Event saw temperatures plunge across Northern Europe for centuries.  Much of the modern
+                                    UK was uninhabitable.</p>  The waters of today's English Channel and North Sea were
+                                    locked in massive glaciers– today's British Isles weren't separated from Europe until 6,000 years ago.</div>
 
-        <!-- top left card content -->
-        <div class="card align-items-center">
-          <div class="card-header mx-1 text-center" style="padding: .5em">
-            <h5>A Story in Bone</h5>
-          </div>
-          <div class="card-text mx-auto" style="padding: .5em">
-              <h6 class="lead" style="font-size: large; padding: .5em">In this map, you're invited to explore the radiocarbon history of the UK.</h6>
-              <p>Each dot represents a unique artifact which has been radiocarbon dated.  Most sites contain several artifacts, often from different eras and cultures.</p>
-            </div>
-        <div class="container-fluid">
-            <img src="img/main-card.jpg" class="card-img-top card-pic" style="padding-top:.5em"></div>
-          <div class="card-footer" style="font-size: x-small">
-            Photo Credit: Alan Hawkes, <i>The Sandman</i></div>
-        </div> <!-- end top left card text -->
+                                </div>
+                            </div>
 
-        <div class="spacer" style="margin: .5em"></div>
+                            <div class="spacer" style='margin: 5px'></div>
 
-        <!-- lower left card content -->
-        <div class="card align-items-center">
-          <div class="card-header mx-1 text-center" style="padding: .5em">
-            <h5>Time Slider and Symbols</h5>
-          </div>
-          <div class="'card-header mx-1 text-center" style="padding: .5em">
-            <h6 class="lead">The map covers a time sequence from 10,000 BCE to 1820 CE.</h6>
-          </div>
-          <div class="card-text mx-auto" style="padding: .5em">
-            <p>As you move the time slider, <b>Symbols</b> will change size according to a <i>probability density function</i>: the larger
-              the symbol, the more likely it originated in that year.</p>
-            <!-- <p>In a very broad sense, this tool can be used to explore spatial patterns of human social development in prehistory...</p>
-            <p>Or, it just tells you where we've found some old things.</p> -->
-          </div>
+                            <div class="card-header mx-1 text-center" style="padding: .25em">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                                A Story in Bone</a></h4>
+                            </div>
+                            <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="container-fluid">
+                                        <img src="img/main-card.jpg" class="card-img-top card-pic" style="padding-top:.5em">
+                                    </div>
+                                    <div class="card-footer" style="font-size: x-small">
+                                    Photo Credit: Alan Hawkes, <i>The Sandman</i>
+                                    </div>
+                                </div>
+                                <div class="card-body  pt-0"><p class="lead mt-0 mb-1">In this map, you're invited to
+                                    explore the prehistory of the UK after the Younger Dryas.</p>
+                                    Each dot represents a sample which has been radiocarbon dated.  As the time sequence
+                                    changes, the size of the dot will expand into a circle based on the probability the
+                                    sample originated in that year.
+                                </div>
+                            </div>
 
-      </div> <!-- end lower left card content -->
+                            <div class="spacer" style='margin: 5px'></div>
 
-      </div> <!-- end of left sidebar column -->
+                            <div class="card-header mx-1 text-center" style="padding: .25em">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                                Radiocarbon Probability</a></h4>
+                            <div id="collapse3" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                    <div class="container-fluid">
+                                        <img src="img/kde.png" class="card-img-top card-pic" style="padding-top:.5em">
+                                    </div>
+                                    <div class="card-body text-left"><p>New methodologies leverage radiocarbon data through
+                                        advanced probability modeling.</p>
+                                        These techniques can illuminate the migration, growth, and expansion patterns of
+                                        ancient populations by gathering large volumes of radiocarbon sample data and
+                                        analyzing the frequency of individual radiocarbon dates.
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                            <div class="spacer" style='margin: .25em'></div>
+
+                            <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                                Time Slider and Controls</a></h4>
+                            </div>
+                            <div id="collapse4" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="container-fluid">
+                                        <img src="img/controls.png" class="card-img-top card-pic" style="padding-top:.5em">
+                                    </div>
+                                </div>
+                                <div class="card-body"><p>Drag the red circle to sweep through the time series.  Each
+                                    step represents 5 years.</p>
+                                    <p>Playback controls offer automatic sequencing.  Changing the speed control increases
+                                    the step interval: time passes faster, but at the cost of decreased detail!</p>
+                                    Combine playback and manual manipulation to explore the data.
+                                </div>
+
+                            <div class="spacer" style='margin: 5px'></div>
+
+                    </div>
+                </div>
+            </div> <!-- end of left sidebar column -->
 
 
       <!-- MAP GOES HERE -->
@@ -118,6 +171,7 @@
 
     </div> <!-- end right column -->
   </div> <!-- end main content row -->
+
 
   <!-- Add your site or application content here -->
   <script src="js/jquery-3.5.1.js"></script>

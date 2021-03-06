@@ -347,6 +347,16 @@ function createSequenceControls(map, attributes) {
 
 }
 
+function stopPlayback() {
+  // change button state, change background image, clear and replace interval
+
+  $('#play-button').attr('state', 'off');
+  let play = 'img/play.svg';
+  $('#play-button').css('background-image', "url(" + play + ")");
+  clearInterval(timer);
+  timer = null;
+}
+
 // when we need point symbols from geojson data, we turn to this symbol, which calls the pointToLayer
 function createPropSymbols(data, map) {
   // uses geoJson function to instantiate circlemarkers from geojson data
@@ -616,19 +626,14 @@ function changeButtonColor(buttonID, Color) {
 }
 
 // stops playback because that has to happen in lots of places
-function stopPlayback() {
-  // change button state, change background image, clear and replace interval
 
-  $('#play-button').attr('state', 'off');
-  let play = 'img/play.svg';
-  $('#play-button').css('background-image', "url(" + play + ")");
-  clearInterval(timer);
-  timer = null;
-}
 
 // global variables controlling playback speed
 speed = [2, 50];
 timer = null;
 
 // let's make it happen
-$(document).ready(mapFactory);
+ $(document).ready(function() {
+   $("#myModal").modal('show');
+   mapFactory();
+})
