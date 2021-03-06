@@ -395,7 +395,7 @@ h6, .h6 {
 }
 
 .lead {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 300;
 }
 
@@ -4445,8 +4445,6 @@ input[type="button"].btn-block {
 .card-footer {
   padding: 0.75rem 1.25rem;
   background-color: #f8f9fa;
-  border: .5px solid #fff3cd;
-  border-radius: 2px;
 }
 
 .card-footer:last-child {

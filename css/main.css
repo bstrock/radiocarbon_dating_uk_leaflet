@@ -312,6 +312,14 @@ a {
   color: black;
 }
 
+#accordion {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+#accordion .card {
+  border: none;
+}
+
 
 /* ==========================================================================
    Helper classes

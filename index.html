@@ -39,144 +39,136 @@
         <!-- left sidebar panel column -->
 
                 <div class="col-sm-6 col-md-2 col-lg-4 col-xl-2 align-items-center" id='leftcol'>
-                    <div class="card modal-card">
-                        <div class="panel-group" id="accordion">
+                    <div class="accordion" id="accordion">
+
+                        <div class="card">
                             <div class="card-header mx-1 text-center mt-2" style="padding: .25em">
-                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                                The Younger Dryas</a></h4>
+                                <a data-toggle="collapse" href="#collapse1">
+                                    <h4 class="panel-title">The Younger Dryas</h4>
+                                </a>
                             </div>
-                            <div id="collapse1" class="panel-collapse collapse in">
-                                <div class="panel-body">
+
+                            <div id="collapse1" class="collapse show" data-parent="#accordion">
                                     <div class="container-fluid">
                                         <img src="img/dryas.jpg" class="card-img-top card-pic" style="padding-top:.5em">
                                     </div>
-                                    <div class="card-body"><p>13,000 years ago, the Younger Dryas period saw temperatures
-                                        plunge dramatically across most of the Northern hemisphere for centuries.  This
-                                        was a very different world than ours– the waters of today's English Channel and
+                                    <div class="card-body text-left pt-2 pb-2"><p class="lead">13,000 years ago,
+                                        most of the Northern hemisphere froze for over a millennium during the Younger Dryas (12,900-11,700 BCE).
+                                    </p>  This was a very different world than ours– the waters of today's English Channel and
                                         North Sea were locked in massive glaciers, and much of today's UK was uninhabitable.</div>
-
-                                </div>
                             </div>
+                        </div>
 
-                            <div class="spacer" style='margin: 5px'></div>
-
+                        <div class="card">
                             <div class="card-header mx-1 text-center" style="padding: .25em">
-                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                                A Story in Bone</a></h4>
+                                <a class ='collapsed' data-toggle="collapse" href="#collapse2">
+                                    <h4 class="panel-title">A Story in Bone</h4>
+                                </a>
                             </div>
-                            <div id="collapse2" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="container-fluid">
-                                        <img src="img/main-card.jpg" class="card-img-top card-pic" style="padding-top:.5em">
-                                    </div>
-                                    <div class="card-footer" style="font-size: x-small">
-                                    Photo Credit: Alan Hawkes, <i>The Sandman</i>
-                                    </div>
+
+                            <div id="collapse2" class="collapse" data-parent="#accordion">
+                                <div class="container-fluid">
+                                    <img src="img/main-card.jpg" class="card-img-top card-pic" style="padding-top:.5em">
                                 </div>
-                                <div class="card-body  pt-0"><p class="lead mt-0 mb-1">In this map, you're invited to
+                                <div class="card-footer" style="font-size: x-small">
+                                    Photo Credit: Alan Hawkes, <i>The Sandman</i>
+                                </div>
+
+                                <div class="card-body text-left pt-2 pb-2"><p class="lead mt-0 mb-1">In this map, you're invited to
                                     explore the prehistory of the UK after the Younger Dryas.</p>
-                                    Each dot represents a sample which has been radiocarbon dated.  As the time sequence
+                                    Each dot represents an organic sample which has been radiocarbon dated.  As the time sequence
                                     changes, the size of the dot will expand into a circle based on the probability the
                                     sample originated in that year.
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="spacer" style='margin: 5px'></div>
-
+                        <div class="card">
                             <div class="card-header mx-1 text-center" style="padding: .25em">
-                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                                Radiocarbon Probabilities</a></h4>
-                            <div id="collapse3" class="panel-collapse collapse">
-                                <div class="panel-body">
+                                <a class="collapsed" data-toggle="collapse" href="#collapse3">
+                                    <h4 class="panel-title">Radiocarbon Probabilities</h4>
+                                </a>
+                            </div>
 
-                                    <div class="container-fluid">
-                                        <img src="img/kde.png" class="card-img-top card-pic" style="padding-top:.5em">
-                                    </div>
-                                    <div class="card-body text-left"><p>New methodologies leverage radiocarbon data through
-                                        advanced probability modeling.</p>
-                                        These techniques can illuminate the migration, growth, and expansion patterns of
-                                        ancient populations by gathering large volumes of radiocarbon sample data and
-                                        analyzing the frequency of individual radiocarbon dates.
-                                    </div>
-
+                            <div id="collapse3" class="collapse"  data-parent="#accordion">
+                                <div class="container-fluid">
+                                    <img src="img/kde.png" class="card-img-top card-pic" style="padding-top:.5em">
                                 </div>
+                                <div class="card-body text-left pt-2 pb-2"><p>New methodologies leverage radiocarbon data through
+                                    advanced probability modeling.</p>
+                                    These techniques can illuminate the migration, growth, and expansion patterns of
+                                    ancient populations by gathering large volumes of radiocarbon sample data and
+                                    analyzing the frequency of individual radiocarbon dates.
+                                </div>
+
                             </div>
                         </div>
 
-
-                            <div class="spacer" style='margin: .25em'></div>
-
+                        <div class="card">
                             <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
-                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
-                                Time Slider and Controls</a></h4>
+                                <a class="collapsed" data-toggle="collapse" href="#collapse4">
+                                    <h4 class="panel-title">Time Slider and Controls</h4>
+                                </a>
                             </div>
-                            <div id="collapse4" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="container-fluid">
-                                        <img src="img/controls.png" class="card-img-top card-pic" style="padding-top:.5em">
-                                    </div>
+
+                            <div id="collapse4" class="collapse" data-parent="#accordion">
+                                <div class="container-fluid">
+                                    <img src="img/controls.png" class="card-img-top card-pic" style="padding-top:.5em">
                                 </div>
-                                <div class="card-body"><p>Drag the red circle to sweep through the time series.  Each
+                                <div class="card-body text-left pt-2 pb-2"><p>Drag the red circle to sweep through the time series.  Each
                                     step represents 5 years.</p>
                                     <p>Playback controls offer automatic sequencing.  Changing the speed control increases
                                     the step interval: time passes faster, but at the cost of decreased detail!</p>
                                     Combine playback and manual manipulation to explore the data.
                                 </div>
-
-                            <div class="spacer" style='margin: 5px'></div>
-
-
-                    </div>
-
-                        <div class="spacer" style='margin: 2px'></div>
-
-                        <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
-                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
-                                Symbology</a></h4>
                             </div>
-                            <div id="collapse5" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="container-fluid">
-                                        <img src="img/controls.png" class="card-img-top card-pic" style="padding-top:.5em">
-                                    </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
+                                <a class="collapsed" data-toggle="collapse" href="#collapse5">
+                                    <h4 class="panel-title">Symbology</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse5" class="collapse" data-parent="#accordion">
+                                <div class="container-fluid">
+                                    <img src="img/controls.png" class="card-img-top card-pic" style="padding-top:.5em">
                                 </div>
-                                <div class="card-body"><p>Many sites contain more than one artifact.  Symbols are semi-transparent:
-                                brighter circles indicate more higher-probability samples in one area.</p>
+                                <div class="card-body text-left pt-2 pb-2"><p>Many sites contain more than one artifact.  Symbols are semi-transparent:
+                                    brighter circles indicate more higher-probability samples in one area.</p>
                                     <p>The controls on the right side change symbol color according to the sample's associated
                                     <i>archaeological culture</i>.  Not all samples are associated with a culture.</p>
                                 </div>
-
-                            <div class="spacer" style='margin: 5px'></div>
-
-                    </div>
-
-                        <div class="spacer" style='margin: 2px'></div>
-
-                        <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
-                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse6">
-                                Archaeological Cultures</a></h4>
                             </div>
-                            <div id="collapse6" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="container-fluid">
-                                        <img src="img/beaker.jpg" class="card-img-top card-pic" style="padding-top:.5em">
-                                        <div class="card-footer mb-0" style="font-size: x-small">
-                                    Bell Beaker pottery vessel.  Credit:  Natural History Museum of London
-                                    </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
+                                <a class="collapsed" data-toggle="collapse" href="#collapse6">
+                                    <h4 class="panel-title">Archaeological Cultures</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse6" class="collapse" data-parent="#accordion">
+                                <div class="container-fluid">
+                                    <img src="img/beaker.jpg" class="card-img-top card-pic" style="padding-top:.5em">
+                                    <div class="card-footer mb-0" style="font-size: x-small">
+                                        Bell Beaker pottery vessel.  Credit:  Natural History Museum of London
                                     </div>
                                 </div>
-                                <div class="card-body pt-0 pb-2">Archaeological cultures describe common elements found in the
+                                <div class="card-body text-left pt-2 pb-2">Archaeological cultures describe common elements found in the
                                     material remains of ancient population groups.  While cultures can be distinctive,
                                     these labels can also obscure underlying processes of change within groups, as well
                                     as important differences between them.
                                 </div>
+                            </div>
+                        </div>
 
-                            <div class="spacer" style='margin: 5px'></div>
-                    </div>
-                    </div>
                 </div>
+            </div>
 
-            </div> <!-- end of left sidebar column -->
+             <!-- end of left sidebar column -->
 
 
       <!-- MAP GOES HERE -->
