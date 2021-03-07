@@ -9,6 +9,8 @@ function mapFactory() {
     zoom: 6
   });
 
+
+
   //create tiles, add to map
   L.tileLayer('https://api.mapbox.com/styles/v1/bstrock/ckkyvuz9f34ng17qvc0grkfqw/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -18,6 +20,7 @@ function mapFactory() {
     zoomOffset: -1,
     accessToken: 'pk.eyJ1IjoiYnN0cm9jayIsImEiOiJjanpkOG82M28wOGRzM2xtb3ptNHR5YzlvIn0.gGUJvtXSIRlx-VgF3avzDw'
   }).addTo(map);
+
 
   // move attribution control
   L.control.attribution({
@@ -125,6 +128,7 @@ function getData(map) {
 
   let data = $.getJSON('data/gbc14-10k.geojson', function() {
     $.when(data).done(function(){
+      map.spin(false);
       let geoJSON = data.responseJSON;
       console.log(geoJSON);
       let attributes = processData(geoJSON);  //gets ordered array of years
@@ -632,8 +636,9 @@ function changeButtonColor(buttonID, Color) {
 speed = [2, 50];
 timer = null;
 
+
+
 // let's make it happen
  $(document).ready(function() {
-   $("#myModal").modal('show');
    mapFactory();
-})
+});
