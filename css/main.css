@@ -20,6 +20,7 @@ html {
 
 body {
   height: 100%;
+  font-family: "Ibarra Real Nova";
 }
 
 .bg {
@@ -301,7 +302,26 @@ input[type=range]:focus::-ms-fill-upper {
     top: 50%;
   margin-top:10px;
   margin-bottom: 10px;
+}
 
+#leftcol{
+  height: 100%;
+}
+
+a {
+  color: black;
+}
+
+#accordion {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+#accordion .card {
+  border: none;
+}
+
+p {
+  margin-bottom: .8rem;
 }
 
 

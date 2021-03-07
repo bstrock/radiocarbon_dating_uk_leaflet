@@ -25,56 +25,191 @@
 </head>
 
 <body>
-<div class="bg">
-<div class="jumbotron-fluid" style='height: 12em'>
+    <div class="bg">
+        <div class="jumbotron-fluid" style='height: 12em'>
   <h4 class="display-3" style="font-family:'Ibarra Real Nova" id="top-title">What Was Left:</h4>
     <h6 class="display-4" style="font-family:'Ibarra Real Nova"id="top-sub-title">Archaeology and the Radiocarbon Record of the UK</h6></div>
 
-  <!-- top-level container -->
-  <div class="container-fluid align-content-center">
+        <!-- top-level container -->
+        <div class="container-fluid align-content-center">
 
-    <!-- main content row -->
-    <div class="row container-fluid">
+        <!-- main content row -->
+            <div class="row container-fluid">
 
-      <!-- left sidebar panel column -->
+        <!-- left sidebar panel column -->
 
-      <div class="col-sm-6 col-md-2 col-lg-4 col-xl-2 panel-body align-items-center id='leftcol'">
+                <div class="col-sm-6 col-md-2 col-lg-4 col-xl-2 align-items-center" id='leftcol'>
+                    <div class="accordion" id="accordion">
 
-        <!-- top left card content -->
-        <div class="card align-items-center">
-          <div class="card-header mx-1 text-center" style="padding: .5em">
-            <h5>A Story in Bone</h5>
-          </div>
-          <div class="card-text mx-auto" style="padding: .5em">
-              <h6 class="lead" style="font-size: large; padding: .5em">In this map, you're invited to explore the radiocarbon history of the UK.</h6>
-              <p>Each dot represents a unique artifact which has been radiocarbon dated.  Most sites contain several artifacts, often from different eras and cultures.</p>
+                        <div class="card">
+                            <div class="card-header mx-1 text-center mt-2" style="padding: .25em">
+                                <a data-toggle="collapse" href="#collapse1">
+                                    <h4 class="panel-title mb-1">A Story in Bone</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse1" class="collapse show" data-parent="#accordion">
+                                    <div class="container-fluid">
+                                        <img src="img/main-card.jpg" class="card-img-top card-pic" style="padding-top:.5em">
+                                        <div class="card-footer pb-0" style="font-size: x-small">
+                                    Photo Credit: Alan Hawkes, <i>The Sandman</i>
+                                </div>
+                                    </div>
+                                    <div class="card-body text-left pt-2 pb-2"><p class="lead">In this map, you're invited to
+                                    explore the prehistory of the UK after the Younger Dryas.</p>
+                                    Each dot represents an organic sample which has been radiocarbon dated.  As the time sequence
+                                    changes, the size of the dot will expand into a circle based on the probability the
+                                    sample originated in that year.
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header mx-1 text-center" style="padding: .25em">
+                                <a class ='collapsed' data-toggle="collapse" href="#collapse2">
+                                    <h4 class="panel-title mb-1">The Younger Dryas</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse2" class="collapse" data-parent="#accordion">
+                                <div class="container-fluid">
+                                    <img src="img/dryas.jpg" class="card-img-top card-pic" style="padding-top:.5em">
+                                </div>
+
+
+                                <div class="card-body text-left pt-2 pb-2"><p class="lead mt-0 mb-1"><p>13,000 years ago,
+                                        most of the Northern hemisphere froze for centuries during the Younger Dryas (12,900-11,700 BCE).
+                                    </p>  This was a very different world than ours– the waters of today's English Channel and
+                                        North Sea were locked in massive glaciers, and much of today's UK was uninhabitable.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header mx-1 text-center" style="padding: .25em">
+                                <a class="collapsed" data-toggle="collapse" href="#collapse3">
+                                    <h4 class="panel-title mb-1">Radiocarbon Probabilities</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse3" class="collapse"  data-parent="#accordion">
+                                <div class="container-fluid">
+                                    <img src="img/kde.png" class="card-img-top card-pic" style="padding-top:.5em">
+                                </div>
+                                <div class="card-body text-left pt-2 pb-2"><p class="lead mt0-mb1">New methodologies leverage radiocarbon data through
+                                    advanced probability modeling.</p>
+                                    These techniques can illuminate the migration, growth, and expansion patterns of
+                                    ancient populations by gathering large volumes of radiocarbon sample data and
+                                    analyzing the frequency of individual radiocarbon dates.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
+                                <a class="collapsed" data-toggle="collapse" href="#collapse4">
+                                    <h4 class="panel-title mb-1">Time Slider and Controls</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse4" class="collapse" data-parent="#accordion">
+                                <div class="container-fluid mt-3">
+                                    <div id="carousel1" class="carousel slide" data-ride="carousel" data-interval="4000">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <img class="d-block w-100" src="img/controls-1.png" alt="First slide">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img class="d-block w-100" src="img/controls-2.png" alt="Second slide">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body text-left pt-2 pb-2"><p>Drag the red circle to sweep through the time series.  Each
+                                    step represents 5 years.</p>
+                                    <p>Playback controls offer automatic sequencing.  Changing the speed control increases
+                                    the step interval: time passes faster, but at the cost of decreased detail!</p>
+                                    Combine playback and manual manipulation to explore the data.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
+                                <a class="collapsed" data-toggle="collapse" href="#collapse5">
+                                    <h4 class="panel-title mb-1">Symbology</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse5" class="collapse" data-parent="#accordion">
+                                <div class="container-fluid mt-3">
+                                    <div id="carousel2" class="carousel slide" data-ride="carousel" data-interval="4000">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <img class="d-block w-100" src="img/symbols1.png" alt="First slide">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img class="d-block w-100" src="img/symbols2.png" alt="Second slide">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-body text-left pt-2 pb-2"><p>Many sites contain more than one artifact.  Symbols are semi-transparent:
+                                    brighter circles indicate more higher-probability samples in one area.</p>
+                                    <p>The controls on the right side change symbol color according to the sample's associated
+                                    <i>archaeological culture</i>.  Not all samples are associated with a culture.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header mx-1 text-center" style="padding: .25em"> <!-- card #1 -->
+                                <a class="collapsed" data-toggle="collapse" href="#collapse6">
+                                    <h4 class="panel-title mb-1">Archaeological Cultures</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse6" class="collapse" data-parent="#accordion">
+                                <div class="container-fluid">
+                                    <img src="img/beaker.jpg" class="card-img-top card-pic" style="padding-top:.5em">
+                                    <div class="card-footer mb-0" style="font-size: x-small">
+                                        Bell Beaker pottery vessel.  Credit:  Natural History Museum of London
+                                    </div>
+                                </div>
+                                <div class="card-body text-left pt-2 pb-2">Archaeological cultures describe common elements found in the
+                                    material remains of ancient population groups.  While cultures can be distinctive,
+                                    these labels can also obscure underlying processes of change within groups, as well
+                                    as important differences between them.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header mx-1 mb-2 text-center" style="padding: .25em"> <!-- card #1 -->
+                                <a class="collapsed" data-toggle="collapse" href="#collapse7">
+                                    <h4 class="panel-title mb-1">Explore and Interpret</h4>
+                                </a>
+                            </div>
+
+                            <div id="collapse7" class="collapse" data-parent="#accordion">
+                                <div class="card-body text-left pt-2 pb-2"><p class="lead">This tool is designed for data exploration.</p>
+                                    <p>Every aspect of these analyses are controversial: while radiocarbon probabilities
+                                        may offer insight into population growth trends, these data may only describe
+                                        where we've done archaeological research, or when environmental conditions were
+                                        suitable for preservation.</p>
+                                    Every user should carefully interrogate these data, and cross-reference against other
+                                    sources (Ancient DNA, the material record, etc.) whenever possible.
+
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
             </div>
-        <div class="container-fluid">
-            <img src="img/main-card.jpg" class="card-img-top card-pic" style="padding-top:.5em"></div>
-          <div class="card-footer" style="font-size: x-small">
-            Photo Credit: Alan Hawkes, <i>The Sandman</i></div>
-        </div> <!-- end top left card text -->
 
-        <div class="spacer" style="margin: .5em"></div>
-
-        <!-- lower left card content -->
-        <div class="card align-items-center">
-          <div class="card-header mx-1 text-center" style="padding: .5em">
-            <h5>Time Slider and Symbols</h5>
-          </div>
-          <div class="'card-header mx-1 text-center" style="padding: .5em">
-            <h6 class="lead">The map covers a time sequence from 10,000 BCE to 1820 CE.</h6>
-          </div>
-          <div class="card-text mx-auto" style="padding: .5em">
-            <p>As you move the time slider, <b>Symbols</b> will change size according to a <i>probability density function</i>: the larger
-              the symbol, the more likely it originated in that year.</p>
-            <!-- <p>In a very broad sense, this tool can be used to explore spatial patterns of human social development in prehistory...</p>
-            <p>Or, it just tells you where we've found some old things.</p> -->
-          </div>
-
-      </div> <!-- end lower left card content -->
-
-      </div> <!-- end of left sidebar column -->
+             <!-- end of left sidebar column -->
 
 
       <!-- MAP GOES HERE -->
@@ -84,14 +219,10 @@
       <div class="col-sm-2 col-md-2 col-lg-6 col-xl-2 panel-body align-items-center">
         <!-- top right card -->
          <div class="card align-items-center">
-           <div class="card-header mx-2 text-center" style="padding: .5em">
-             <h5>Archaeological Culture</h5>
+           <div class="card-header mx-2 text-center mt-2">
+             <h5>Archaeological Culture Selection</h5>
            </div>
-           <div class='card-text mx-auto text-center' style="padding: .5em; margin-bottom: 0em;">
-             <b>Buttons</b> change symbol color according to the sample's associated culture.<br>
-             <b>Symbols</b> are <i>semi-transparent</i>.  Brighter colors suggest that several artifacts may overlap in time at that site.<br>
-             <b>Symbols</b> are <i>encircled by white rings</i>.  More rings at one site suggest several artifacts which don't overlap in time.
-           </div>
+
 
         <div class="spacer" style='margin: .25em'></div>
 
@@ -118,6 +249,7 @@
 
     </div> <!-- end right column -->
   </div> <!-- end main content row -->
+
 
   <!-- Add your site or application content here -->
   <script src="js/jquery-3.5.1.js"></script>
