@@ -636,11 +636,6 @@ function changeButtonColor(buttonID, Color) {
 speed = [2, 50];
 timer = null;
 
-var script = document.createElement("script");
-script.type = "text/javascript";
-script.src = "js/spin.umd.js";
-document.body.appendChild(script);
-
 script = document.createElement("script");
 script.type = "text/javascript";
 script.src = "js/leaflet.spin.js";
