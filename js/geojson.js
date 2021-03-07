@@ -127,9 +127,9 @@ function getData(map) {
   inputs: leaflet map object */
 
 
-
+  map.fire('dataloading');
   let data = $.getJSON('data/gbc14-10k.geojson', function() {
-    map.fire('dataloading');
+
     $.when(data).done(function(){
       let geoJSON = data.responseJSON;
       console.log(geoJSON);
