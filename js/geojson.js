@@ -72,7 +72,7 @@ function makeLegend(map) {
       let div = L.DomUtil.create("div", "time-legend");
 
       // I'd like to get the styling done in CSS, but this worked first.
-      div.innerHTML = '<h2 style="font-family:\'Ibarra Real Nova">Year:&nbsp;<span id="year-view">10000</span><span id="era-view"> BCE</span></h2>';
+      div.innerHTML = '<h2 style="font-family:\'Ibarra Real Nova">Year:&nbsp;<span id="year-view">10000</span><span id="era-view"> BCE</span><br>Era: <span id="period-view" style="margin-left: .8em">Paleolithic</span></h2>';
       div.style.backgroundColor = 'lightgrey';
       div.style.textAlign = 'left';
       div.style.width = '300px';
@@ -508,6 +508,32 @@ function updateTimeLegend(attribute, interval) {
         $('#era-view').css('margin-right', '2.3em');
       }
     }
+  }
+
+  let periodObj = {
+    first: 'Paleolithic',
+    second: 'Mesolithic',
+    third: 'Neolithic',
+    fourth: 'Bronze Age',
+    fifth: 'Iron Age',
+    sixth: 'Roman',
+    seventh: 'Post-Roman'
+  };
+
+  if (attribute > -10001 && attribute < -8000){
+    $('#period-view').html(periodObj['first']).css('margin-left', '.8em')
+  } else if (attribute > -8000 && attribute < -4000){
+    $('#period-view').html(periodObj['second']).css('margin-left', '.8em')
+  } else if (attribute > -4000 && attribute < -2200){
+    $('#period-view').html(periodObj['third']).css('margin-left', '.8em')
+  } else if (attribute > -2200 && attribute < -750){
+    $('#period-view').html(periodObj['fourth']).css('margin-left', '.8em')
+  } else if (attribute > -750 && attribute < 43) {
+    $('#period-view').html(periodObj['fifth']).css('margin-left', '.8em')
+  } else if (attribute > 43 && attribute < 410) {
+    $('#period-view').html(periodObj['sixth']).css('margin-left', '.8em')
+  } else if (attribute > 410) {
+    $('#period-view').html(periodObj['seventh']).css('margin-left', '.8em')
   }
 }
 
