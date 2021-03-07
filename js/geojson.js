@@ -6,7 +6,8 @@ function mapFactory() {
     attributionControl: false,
     maxBounds: [[50, 4], [62, -8.5]],
     center: [55, -4.5],
-    zoom: 6
+    zoom: 6,
+    loadingControl: true
   });
 
 
@@ -128,7 +129,6 @@ function getData(map) {
 
   let data = $.getJSON('data/gbc14-10k.geojson', function() {
     $.when(data).done(function(){
-      map.spin(false);
       let geoJSON = data.responseJSON;
       console.log(geoJSON);
       let attributes = processData(geoJSON);  //gets ordered array of years
@@ -635,11 +635,6 @@ function changeButtonColor(buttonID, Color) {
 // global variables controlling playback speed
 speed = [2, 50];
 timer = null;
-
-script = document.createElement("script");
-script.type = "text/javascript";
-script.src = "js/leaflet.spin.js";
-document.body.appendChild(script);
 
 // let's make it happen
  $(document).ready(function() {
