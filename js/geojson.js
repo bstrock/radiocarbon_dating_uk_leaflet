@@ -10,8 +10,6 @@ function mapFactory() {
     loadingControl: true
   });
 
-
-
   //create tiles, add to map
   L.tileLayer('https://api.mapbox.com/styles/v1/bstrock/ckkyvuz9f34ng17qvc0grkfqw/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -127,7 +125,10 @@ function getData(map) {
   waits until data is loaded
   inputs: leaflet map object */
 
+
+
   let data = $.getJSON('data/gbc14-10k.geojson', function() {
+
     $.when(data).done(function(){
       let geoJSON = data.responseJSON;
       console.log(geoJSON);
