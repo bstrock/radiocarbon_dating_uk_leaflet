@@ -27,7 +27,11 @@ function mapFactory() {
   }).addTo(map);
 
   //call to retrieve map data
+
   getData(map);
+  map.on('loaded', function(e){
+    map.fire('dataload', e)
+  })
 
   //attaches listeners to buttons for "culture" field
   buttonFactory(map);
@@ -128,8 +132,10 @@ function getData(map) {
 
 
   let data = $.getJSON('data/gbc14-10k.geojson', function() {
+    map.fire('dataloading');
 
     $.when(data).done(function(){
+      map.fire('dataload');
       let geoJSON = data.responseJSON;
       console.log(geoJSON);
       let attributes = processData(geoJSON);  //gets ordered array of years
