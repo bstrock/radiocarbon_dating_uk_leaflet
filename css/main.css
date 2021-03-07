@@ -308,7 +308,7 @@ input[type=range]:focus::-ms-fill-upper {
   height: 100%;
 }
 
-a {
+.card-header a {
   color: black;
 }
 
