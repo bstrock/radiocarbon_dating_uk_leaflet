@@ -4373,7 +4373,7 @@ input[type="button"].btn-block {
 .card {
   position: relative;
   display: -ms-flexbox;
-  display: flex;
+
   -ms-flex-direction: column;
   flex-direction: column;
   min-width: 0;
@@ -4474,13 +4474,11 @@ input[type="button"].btn-block {
 
 .card-img {
   width: 100%;
-  border-radius: calc(0.25rem - 1px);
 }
 
 .card-img-top {
   width: 100%;
-  border-top-left-radius: calc(0.25rem - 1px);
-  border-top-right-radius: calc(0.25rem - 1px);
+
 }
 
 .card-img-bottom {
