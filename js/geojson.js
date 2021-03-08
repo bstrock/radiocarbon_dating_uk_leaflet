@@ -141,26 +141,37 @@ function makeSymbolLegend(map) {
       container.style.borderColor = 'darkgrey';
       container.style.borderRadius = '5px';
       container.style.width = '150px';
-      container.style.height = '125px';
+      container.style.height = '150px';
       container.style.margin = '7px';
 
       //add temporal legend div to container
       $(container).append('<div id="temporal-legend"><p class="lead text-center mb-0">Symbol Legend</p><span class="d-inline-block ml-2 text-center">Dataset Probability Distribution: Quartiles</span>');
 
       //Step 1: start attribute legend svg string
-      let svg = '<svg id="attribute-legend" width="75px" height="75px" class="d-inline-block mb-0 ml-4 pl-3">';
+      let svg = '<svg id="attribute-legend" width="125px" height="75px" class="d-inline-block mb-0 mt-8 ml-4 pl-3">';
 
       let circles = {
         '25%': calcPropRadius(.00007848464),
         '50%': calcPropRadius(.0008255264),
         '75%': calcPropRadius(.003128665),
-        '100%': calcPropRadius(.035740)
+        'Max': calcPropRadius(.035740)
+      };
+
+      let pos = {
+        'Max': 35,
+        '75%': 50,
+        '50%': 62,
+        '25%': 73,
       };
 
       for (const rank in circles){
-            svg += '<circle class="legend-circle" id="' + rank + '" fill="#FFF" fill-opacity=".5" stroke="black" stroke-width="1" cx="30" r="' + circles[rank] + '" cy="' + (45-circles[rank]) + '" />';
-
+            svg += '<circle class="legend-circle" id="' + rank + '" fill="#FFF" fill-opacity=".5" stroke="black" stroke-width="1" cx="30" r="' + circles[rank] + '" cy="' + (75-circles[rank]) + '" />';
+            svg += '<text style="color: darkgrey; font-family:\'Ibarra Real Nova" id="' + pos[rank] + '" x="65" y="' + pos[rank]+ '">' + rank + '</text>';
         }
+
+      for (const val in pos){
+
+      }
 
         //close svg string
         svg += "</svg>";
@@ -286,14 +297,14 @@ function buttonFactory(map) {
 // creates the slider input element, initializes its range values, and adds event listener
 function createSequenceControls(map, attributes) {
   // create slider controls
-  $('.slider-control').append('<div class="container" id="time-container"><span class="play-button" id="play-button"></span><span class="" id="play-speed">x2</span><input class="range-slider" type="range" id="range"><span class="replay-button" id="replay-button"></span></div>');
+  $('.slider-control').append('<div class="container" id="time-container"><span class="play-button" id="play-button"></span><span class="" id="play-speed">x4</span><input class="range-slider" type="range" id="range"><span class="replay-button" id="replay-button"></span></div>');
 
   // configure range slider values
   $('.range-slider').attr({
     min: 0,
     max: 2364,
     value: 0,
-    step: 1,
+    step: 4,
   });
 
   // initialize play button
@@ -483,7 +494,7 @@ function calcPropRadius(attValue) {
   inputs:  attributes value to calculate
   returns:  radius (numeric value) */
 
-  let radius = 40 * Math.pow(attValue, .2);
+  let radius = 50 * Math.pow(attValue, .2);
 
   return radius;
 }
@@ -722,7 +733,7 @@ function changeButtonColor(buttonID, Color) {
 
 
 // global variables controlling playback speed
-speed = [2, 50];
+speed = [4, 100];
 timer = null;
 
 // let's make it happen
