@@ -4,9 +4,9 @@ function mapFactory() {
 
   let map = L.map('mapid', {
     attributionControl: false,
-    maxBounds: [[50, 4], [62, -8.5]],
-    center: [55, -4.5],
-    zoom: 6,
+    maxBounds: [[50, 5], [62, -12]],
+    center: [53, 0],
+    zoom: 7,
     loadingControl: true
   });
 
