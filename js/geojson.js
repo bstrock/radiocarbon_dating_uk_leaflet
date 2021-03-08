@@ -42,11 +42,21 @@ function mapFactory() {
   //attach time legend to map
   L.control.timeLegend({position: 'bottomleft'}).addTo(map);
 
-  makeSymbolLegend(map);
+  let symbolLegend = makeSymbolLegend();
 
-  L.control.symbolLegend = (opts) => {return new L.Control.SymbolLegend(opts)};
+  let symbolLegendOptions = {
+    size: [60, 60],
+    position: 'bottomright'
+  };
 
-  L.control.symbolLegend({position: 'bottomright'}).addTo(map);
+  let dialog = L.control.dialog(symbolLegendOptions).setContent(symbolLegend).addTo(map);
+
+  //makeSymbolLegend(map);
+
+  //L.control.symbolLegend = (opts) => {return new L.Control.SymbolLegend(opts)};
+
+  //L.control.symbolLegend({position: 'bottomright'}).addTo(map);
+
 
   // extend control to make slider
   makeSliderControl(map);
@@ -125,45 +135,30 @@ function makeSliderControl(map) {
   });
 }
 
-function makeSymbolLegend(map) {
-  L.Control.SymbolLegend = L.Control.extend({
-    options: {
-      position: 'bottomright'
-    },
+function makeSymbolLegend() {
 
-    onAdd: function (map) {
-      // create the control container with a particular class name
-      let container = L.DomUtil.create('div', 'legend-control-container');
+  //Step 1: start attribute legend svg string
+  let svg = '<svg id="attribute-legend" width="180px" height="180px">';
 
-      //add temporal legend div to container
-      $(container).append('<div id="temporal-legend">');
+  let circles = {
+    rank25: calcPropRadius(.00007848464),
+    rank50: calcPropRadius(.0008255264),
+    rank75: calcPropRadius(.003128665),
+    rank100: calcPropRadius(.035740)
+  };
 
-      //Step 1: start attribute legend svg string
-      let svg = '<svg id="attribute-legend" width="180px" height="180px">';
-
-      let circles = {
-        rank25: calcPropRadius(.00007848464),
-        rank50: calcPropRadius(.0008255264),
-        rank75: calcPropRadius(.003128665),
-        rank100: calcPropRadius(.035740)
-      };
-
-      for (const rank in circles){
-            svg += '<circle class="legend-circle" id="' + rank + '" fill="#FFF" fill-opacity=".8" stroke="black" stroke-width="1" cx="90" r="' + circles[rank] + '" cy="' + (179-circles[rank]) + '" />';
-        }
-
-        //close svg string
-        svg += "</svg>";
-
-      //add attribute legend svg to container
-      $(container).append(svg);
-
-      return container;
-    },
-    onRemove: function(map){
+  for (const rank in circles){
+        svg += '<circle class="legend-circle" id="' + rank + '" fill="#FFF" fill-opacity=".8" stroke="black" stroke-width="1" cx="90" r="' + circles[rank] + '" cy="' + (179-circles[rank]) + '" />';
     }
-  });
+
+    //close svg string
+    svg += "</svg>";
+
+  //add attribute legend svg to container
+
+  return svg;
 }
+
 
 
 // ajax call to get the geojson data
