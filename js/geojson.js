@@ -42,21 +42,11 @@ function mapFactory() {
   //attach time legend to map
   L.control.timeLegend({position: 'bottomleft'}).addTo(map);
 
-  let symbolLegend = makeSymbolLegend();
+  makeSymbolLegend(map);
 
-  let symbolLegendOptions = {
-    size: [60, 60],
-    position: 'bottomright'
-  };
+  L.control.symbolLegend = (opts) => {return new L.Control.SymbolLegend(opts)};
 
-  let dialog = L.control.dialog(symbolLegendOptions).setContent(symbolLegend).addTo(map);
-
-  //makeSymbolLegend(map);
-
-  //L.control.symbolLegend = (opts) => {return new L.Control.SymbolLegend(opts)};
-
-  //L.control.symbolLegend({position: 'bottomright'}).addTo(map);
-
+  L.control.symbolLegend({position: 'bottomright'}).addTo(map);
 
   // extend control to make slider
   makeSliderControl(map);
@@ -135,30 +125,55 @@ function makeSliderControl(map) {
   });
 }
 
-function makeSymbolLegend() {
+function makeSymbolLegend(map) {
+  L.Control.SymbolLegend = L.Control.extend({
+    options: {
+      position: 'bottomright'
+    },
 
-  //Step 1: start attribute legend svg string
-  let svg = '<svg id="attribute-legend" width="180px" height="180px">';
+    onAdd: function (map) {
+      // create the control container with a particular class name
+      let container = L.DomUtil.create('div', 'legend-control-container');
+      container.style.backgroundColor = 'lightgrey';
+      container.style.padding = '.5em';
+      container.style.borderStyle = 'solid';
+      container.style.borderWidth = '2px';
+      container.style.borderColor = 'darkgrey';
+      container.style.borderRadius = '5px';
+      container.style.width = '150px';
+      container.style.height = '125px';
+      container.style.margin = '7px';
 
-  let circles = {
-    rank25: calcPropRadius(.00007848464),
-    rank50: calcPropRadius(.0008255264),
-    rank75: calcPropRadius(.003128665),
-    rank100: calcPropRadius(.035740)
-  };
+      //add temporal legend div to container
+      $(container).append('<div id="temporal-legend"><p class="lead text-center mb-0">Symbol Legend</p><span class="d-inline-block ml-2 text-center">Dataset Probability Distribution: Quartiles</span>');
 
-  for (const rank in circles){
-        svg += '<circle class="legend-circle" id="' + rank + '" fill="#FFF" fill-opacity=".8" stroke="black" stroke-width="1" cx="90" r="' + circles[rank] + '" cy="' + (179-circles[rank]) + '" />';
+      //Step 1: start attribute legend svg string
+      let svg = '<svg id="attribute-legend" width="75px" height="75px" class="d-inline-block mb-0 ml-4 pl-3">';
+
+      let circles = {
+        '25%': calcPropRadius(.00007848464),
+        '50%': calcPropRadius(.0008255264),
+        '75%': calcPropRadius(.003128665),
+        '100%': calcPropRadius(.035740)
+      };
+
+      for (const rank in circles){
+            svg += '<circle class="legend-circle" id="' + rank + '" fill="#FFF" fill-opacity=".5" stroke="black" stroke-width="1" cx="30" r="' + circles[rank] + '" cy="' + (45-circles[rank]) + '" />';
+
+        }
+
+        //close svg string
+        svg += "</svg>";
+
+      //add attribute legend svg to container
+      $(container).append(svg);
+
+      return container;
+    },
+    onRemove: function(map){
     }
-
-    //close svg string
-    svg += "</svg>";
-
-  //add attribute legend svg to container
-
-  return svg;
+  });
 }
-
 
 
 // ajax call to get the geojson data
