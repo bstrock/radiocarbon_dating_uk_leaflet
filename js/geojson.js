@@ -34,13 +34,19 @@ function mapFactory() {
   buttonFactory(map);
 
   // magic leaflet control stuff happens in this function
-  makeLegend(map);
+  makeTimeLegend(map);
 
   //constructor function above is instantiated here
-  L.control.legend = (opts) => {return new L.Control.Legend(opts)};
+  L.control.timeLegend = (opts) => {return new L.Control.TimeLegend(opts)};
 
   //attach time legend to map
-  L.control.legend({position: 'bottomleft'}).addTo(map);
+  L.control.timeLegend({position: 'bottomleft'}).addTo(map);
+
+  makeSymbolLegend(map);
+
+  L.control.symbolLegend = (opts) => {return new L.Control.SymbolLegend(opts)};
+
+  L.control.symbolLegend({position: 'bottomright'}).addTo(map);
 
   // extend control to make slider
   makeSliderControl(map);
@@ -64,9 +70,9 @@ function mapFactory() {
 }
 
 // extends control class to enable time legend
-function makeLegend(map) {
+function makeTimeLegend(map) {
 
-  L.Control.Legend = L.Control.extend({
+  L.Control.TimeLegend = L.Control.extend({
     position: 'bottomright',
     onAdd: function (map) {
       let div = L.DomUtil.create("div", "time-legend");
@@ -118,6 +124,47 @@ function makeSliderControl(map) {
 
   });
 }
+
+function makeSymbolLegend(map) {
+  L.Control.SymbolLegend = L.Control.extend({
+    options: {
+      position: 'bottomright'
+    },
+
+    onAdd: function (map) {
+      // create the control container with a particular class name
+      let container = L.DomUtil.create('div', 'legend-control-container');
+
+      //add temporal legend div to container
+      $(container).append('<div id="temporal-legend">');
+
+      //Step 1: start attribute legend svg string
+      let svg = '<svg id="attribute-legend" width="180px" height="180px">';
+
+      let circles = {
+        rank25: calcPropRadius(.00007848464),
+        rank50: calcPropRadius(.0008255264),
+        rank75: calcPropRadius(.003128665),
+        rank100: calcPropRadius(.035740)
+      };
+
+      for (const rank in circles){
+            svg += '<circle class="legend-circle" id="' + rank + '" fill="#FFF" fill-opacity=".8" stroke="black" stroke-width="1" cx="90" r="' + circles[rank] + '" cy="' + (179-circles[rank]) + '" />';
+        }
+
+        //close svg string
+        svg += "</svg>";
+
+      //add attribute legend svg to container
+      $(container).append(svg);
+
+      return container;
+    },
+    onRemove: function(map){
+    }
+  });
+}
+
 
 // ajax call to get the geojson data
 // callback functions: process data, create symbols, create sequence controls
@@ -658,6 +705,8 @@ function changeButtonColor(buttonID, Color) {
     }
   }
 }
+
+
 
 // stops playback because that has to happen in lots of places
 
