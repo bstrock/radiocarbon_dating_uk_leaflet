@@ -221,6 +221,8 @@ function processData(data) {
     return i;
   });
 
+  console.log(attArray);
+
   // so.
   // JavaScript does some apparently silly things.  Buckle up for this.
   let tenKYA = properties['-10000']; // For some reason, the value "-10000" disappears from the simple key call above.
@@ -254,7 +256,8 @@ function safariSort(attArray){
       });
 
     // array is sorted low to high- let's keep everything but the strings at the end
-      let keepValues = attArray.slice(0, 2366);
+      let keepValues = attArray.slice(0, 2102);
+      console.log(keepValues);
     return keepValues.filter( (value) => value !== 0);  // yes, this does in fact hurt.
 }
 
@@ -273,11 +276,13 @@ function chromeSort(attArray){
 
   let negVals = attArray.slice(0, 1980);
   negVals.reverse();
-  let posVals = attArray.slice(1980, 2345);
+  let posVals = attArray.slice(2244, 2345);
+  console.log(posVals)
   posVals.reverse();
   let strayNegVals = attArray.slice(2364);
   strayNegVals.reverse();
   let firstStep = strayNegVals.concat(negVals);
+  console.log(firstStep.concat(posVals));
   return firstStep.concat(posVals);
       // Whew.
 }
@@ -302,7 +307,7 @@ function createSequenceControls(map, attributes) {
   // configure range slider values
   $('.range-slider').attr({
     min: 0,
-    max: 2364,
+    max: 2100,
     value: 0,
     step: 4,
   });
@@ -364,8 +369,9 @@ function createSequenceControls(map, attributes) {
         // initializes the timer which advances the range-slider to control playback functionality
         timer = setInterval(function () {
           // this block resets slider if playback reaches max value
+
           if (slider.value === slider.max) {
-            slider.value = 0;
+
             stopPlayback();
             updateTimeLegend(attributes[slider.value], speed[1]); // otherwise the year flickers like crazy and it's distracting
 
@@ -573,7 +579,7 @@ function updateTimeLegend(attribute, interval) {
         $('#era-view').css('margin-right', '1.45em');
       }
       // positive values formatted here
-    } else if (attribute > 0) {
+    } else if (attribute >= 0) {
       $('#era-view').html('CE').css('margin-right', '2.7em');
       $('#year-view').html(attribute);
       if (attVal < 1000) {
