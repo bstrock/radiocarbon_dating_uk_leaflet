@@ -4,8 +4,8 @@ function mapFactory() {
 
   let map = L.map('mapid', {
     attributionControl: false,
-    maxBounds: [[50, 5], [62, -12]],
-    center: [53, 0],
+    maxBounds: [[50, 8], [62, -12]],
+    center: [53.25, -1.5],
     zoom: 7,
     loadingControl: true
   });
@@ -345,17 +345,20 @@ function createSequenceControls(map, attributes) {
   $('#play-button').on('click', function() {
     let state = $(this).attr('state');
 
+
     switch (state) {
       case 'off':
         $(this).attr('state', 'on');
         let pause = 'img/pause.svg';
         $(this).css('background-image', "url(" + pause + ")");
         let slider = document.getElementById("range");
+        updateTimeLegend(attributes[slider.value], speed[1]); // otherwise the year flickers like crazy and it's distracting
 
         // this block resets slider if play is clicked when at max value
         if (slider.value === slider.max) {
           slider.value = 0;
           stopPlayback();
+          updateTimeLegend(attributes[slider.value], speed[1]); // otherwise the year flickers like crazy and it's distracting
           break; // this is really important!!!!
         }
         // initializes the timer which advances the range-slider to control playback functionality
@@ -364,6 +367,8 @@ function createSequenceControls(map, attributes) {
           if (slider.value === slider.max) {
             slider.value = 0;
             stopPlayback();
+            updateTimeLegend(attributes[slider.value], speed[1]); // otherwise the year flickers like crazy and it's distracting
+
           }
           slider.stepUp(1); // playback speed is actually controlled by size of step
 
