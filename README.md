@@ -3,7 +3,7 @@ This project, completed for Interactive Geovisualiation, is an interactive map w
 
 <h2>Link to project page</h2>
 
-[View the project here](https://bstrock.github.io/)
+[View the project here](https://bstrock.github.io/radiocarbon_dating_leaflet_example)
 
 <h2>Project Features</h2>
 
