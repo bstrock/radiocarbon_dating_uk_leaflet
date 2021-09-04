@@ -154,7 +154,7 @@ function makeSymbolLegend(map) {
         '25%': calcPropRadius(.00007848464),
         '50%': calcPropRadius(.0008255264),
         '75%': calcPropRadius(.003128665),
-        'Max': calcPropRadius(.035740)
+        'Max': calcPropRadius(.0125740)
       };
 
       let pos = {
@@ -505,7 +505,7 @@ function calcPropRadius(attValue) {
   inputs:  attributes value to calculate
   returns:  radius (numeric value) */
 
-  let radius = 50 * Math.pow(attValue, .2);
+  let radius = Math.sqrt(attValue) * 150;
 
   return radius;
 }
