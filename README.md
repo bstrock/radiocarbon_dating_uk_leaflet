@@ -9,7 +9,7 @@ This project's most notable feature is the custom time slider, which was written
 
 <h2>Screenshot</h2>
 
-<img src="https://github.com/bstrock/radiocarbon_dating_uk_leaflet/blob/f137df7c86f2d9c6ede875da2323bd96723cea2c/img/radio-carbon-dating-screenshot.png" width="50%">
+<img src="https://github.com/bstrock/radiocarbon_dating_uk_leaflet/blob/f137df7c86f2d9c6ede875da2323bd96723cea2c/img/radio-carbon-dating-screenshot.png" width="80%">
 
 <h2>Tech Stack</h2>
 
