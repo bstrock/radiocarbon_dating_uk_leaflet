@@ -1,5 +1,7 @@
 <h1>Radiocarbon Dating the Neolithic in the UK</h1>
+
 This project, completed for Interactive Geovisualiation, is an interactive map which allows users to explore over 10,000 years of radiocarbon dates gathered from 62 excacation sites in the UK, comprising some 1800+ artifacts across 2100 5-year timestamp intervals.
+
 
 This project's most notable feature is the custom time slider, which was written to overcome the limitations of working with such a large timescale at variable playback speeds while allowing for play/pause, scroll, and restart behavior.
 
